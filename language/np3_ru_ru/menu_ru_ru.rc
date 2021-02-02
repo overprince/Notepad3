@@ -59,7 +59,6 @@ BEGIN
     BEGIN
         MENUITEM "&Новый\tCtrl+N",              IDM_FILE_NEW
         MENUITEM "&Открыть...\tCtrl+O",         IDM_FILE_OPEN
-        MENUITEM "Откатит&ь изменения\tF5",     IDM_FILE_REVERT
         MENUITEM "&Сохранить\tCtrl+S",          IDM_FILE_SAVE
         MENUITEM "Сохранить &как...\tF6",       IDM_FILE_SAVEAS
         MENUITEM "Со&хранить копию...\tCtrl+F6", IDM_FILE_SAVECOPY
@@ -77,7 +76,7 @@ BEGIN
         END
         POPUP "&Запустить"
         BEGIN
-            MENUITEM "&Искать в файлах\tCtrl+Shift+F",       IDM_GREP_WIN_SEARCH
+            MENUITEM "&Искать в файлах\tCtrl+Shift+F",     IDM_GREP_WIN_SEARCH
             MENUITEM SEPARATOR
             MENUITEM "Копи&ю окна\tAlt+N",                 IDM_FILE_NEWWINDOW
             MENUITEM "&Пустое окно\tAlt+Shift+N",          IDM_FILE_NEWWINDOW2
@@ -94,26 +93,34 @@ BEGIN
             MENUITEM "Открыть Прово&дник",                 IDM_FILE_EXPLORE_DIR
         END
         MENUITEM SEPARATOR
+        MENUITEM "Перезагрузить файл\tF5",                 IDM_FILE_REVERT
         POPUP "Ко&дировка"
         BEGIN
-            MENUITEM "&ANSI",                              IDM_ENCODING_ANSI
-            MENUITEM "&Unicode",                           IDM_ENCODING_UNICODE
-            MENUITEM "Unicode &Big Endian",                IDM_ENCODING_UNICODEREV
-            MENUITEM "UTF-&8\tShift+F8",                   IDM_ENCODING_UTF8
-            MENUITEM "UTF-8 с BO&M",                       IDM_ENCODING_UTF8SIGN
-            MENUITEM "Е&щё...\tF9",                        IDM_ENCODING_SELECT
+            POPUP "&Перезагрузить файл как"
+            BEGIN
+                MENUITEM "&По умолчанию (из настроек)",           CMD_RECODEDEFAULT
+                MENUITEM "A&NSI\tCtrl+Shift+A",                   CMD_RECODEANSI
+                MENUITEM "&OEM\tCtrl+Shift+O",                    CMD_RECODEOEM
+                MENUITEM "&GB18030\tCtrl+Shift+F10",              CMD_RECODEGB18030
+                MENUITEM SEPARATOR
+                MENUITEM "Переоткрыть в ASCII &как UTF-8\tCtrl+Shift+F8",  CMD_RELOADASCIIASUTF8
+                MENUITEM "Форсировать U&CHARDET анализ",                   CMD_RELOADFORCEDETECTION
+                MENUITEM "Игнорировать &теги кодировки\tAlt+F8",           CMD_RELOADNOFILEVARS
+                MENUITEM SEPARATOR
+                MENUITEM "&Еще кодировки...\tF8",              IDM_ENCODING_RECODE
+            END
+            POPUP "&Установить документ как"
+            BEGIN
+                MENUITEM "&ANSI",                              IDM_ENCODING_ANSI
+                MENUITEM "&Unicode",                           IDM_ENCODING_UNICODE
+                MENUITEM "Unicode &Big Endian",                IDM_ENCODING_UNICODEREV
+                MENUITEM "UTF-&8\tShift+F8",                   IDM_ENCODING_UTF8
+                MENUITEM "UTF-8 с BO&M",                       IDM_ENCODING_UTF8SIGN
+                MENUITEM SEPARATOR
+                MENUITEM "&Еще кодировки...\tF9",              IDM_ENCODING_SELECT
+            END
             MENUITEM SEPARATOR
-            MENUITEM "Переоткрыть в ко&дировке по умолчанию",               CMD_RECODEDEFAULT
-            MENUITEM "Переоткрыть в A&NSI\tCtrl+Shift+A",                   CMD_RECODEANSI
-            MENUITEM "Переоткрыть в &OEM\tCtrl+Shift+O",                    CMD_RECODEOEM
-            MENUITEM "Переоткрыть в &GB18030\tCtrl+Shift+F10",              CMD_RECODEGB18030
-            MENUITEM "Переоткрыть с UCHARDET &анализом",                    CMD_RELOADFORCEDETECTION
-            MENUITEM SEPARATOR
-            MENUITEM "Переоткрыть в ASCII &как UTF-8\tCtrl+Shift+F8",       CMD_RELOADASCIIASUTF8
-            MENUITEM "Игнорировать &теги кодировки\tAlt+F8",                CMD_RELOADNOFILEVARS
-            MENUITEM "&Переоткрыть в...\tF8",                               IDM_ENCODING_RECODE
-            MENUITEM SEPARATOR
-            MENUITEM "&Установить кодировку по умолчанию...",               IDM_ENCODING_SETDEFAULT
+            MENUITEM "Установить &кодировку по умолчанию...",  IDM_ENCODING_SETDEFAULT
         END
         POPUP "Окончани&я строк"
         BEGIN
@@ -260,7 +267,7 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&Время/дата (короткая форма)\tCtrl+F5",           IDM_EDIT_INSERT_SHORTDATE
             MENUITEM "Время/&дата (длинная форма)\tCtrl+Shift+F5",      IDM_EDIT_INSERT_LONGDATE
-            MENUITEM "&Current Timestamp",                              CMD_INSERT_TIMESTAMP
+            MENUITEM "&Текущая метка времени",                          CMD_INSERT_TIMESTAMP
             MENUITEM "&Обновить метки времени\tShift+F5",               CMD_UPDATE_TIMESTAMPS
             MENUITEM SEPARATOR
             MENUITEM "&Комментарий (вкл./выкл.)\tCtrl+Q",               IDM_EDIT_LINECOMMENT
@@ -324,8 +331,14 @@ BEGIN
         MENUITEM "Отображать &окончания строк\tCtrl+Shift+9",       IDM_VIEW_SHOWEOLS
         MENUITEM SEPARATOR
         MENUITEM "Отмечать &гиперссылки\tCtrl+Alt+W",               IDM_VIEW_HYPERLINKHOTSPOTS
-        MENUITEM "Отмечать области выбора &цвета",                  IDM_VIEW_COLORDEFHOTSPOTS
-        MENUITEM "Highlight &Unicode-Points",                       IDM_VIEW_UNICODE_POINTS
+        POPUP "Отмечать области выбора &цвета"
+        BEGIN
+            MENUITEM "&Выключено",                       IDM_VIEW_COLORDEFHOTSPOTS
+            MENUITEM "&RGB+A",                           IDM_VIEW_COLOR_RGBA
+            MENUITEM "&A+RGB",                           IDM_VIEW_COLOR_ARGB
+            MENUITEM "&BGRA",                            IDM_VIEW_COLOR_BGRA
+        END
+        MENUITEM "Отмечать кодов&ые точки",                         IDM_VIEW_UNICODE_POINTS
         MENUITEM "О&тмечать парные скобки\tCtrl+Shift+V",           IDM_VIEW_MATCHBRACES
         POPUP "Подсветка т&екущей строки\tCtrl+Shift+I"
         BEGIN
@@ -336,6 +349,7 @@ BEGIN
         POPUP "По&дсветка совпадений"
         BEGIN
             MENUITEM "&Активна\tAlt+A",                 IDM_VIEW_MARKOCCUR_ONOFF
+            MENUITEM "Также использовать &закладки",    IDM_VIEW_MARKOCCUR_BOOKMARKS
             MENUITEM SEPARATOR
             MENUITEM "&Только видимые",                 IDM_VIEW_MARKOCCUR_VISIBLE
             MENUITEM SEPARATOR
@@ -349,26 +363,36 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "&Номера строк\tCtrl+Shift+N",         IDM_VIEW_LINENUMBERS
-        MENUITEM "Отступ в&ыделения\tCtrl+Shift+M",     IDM_VIEW_MARGIN
+        MENUITEM "Отст&уп для закладок\tCtrl+Shift+M",  IDM_VIEW_BOOKMARK_MARGIN
         MENUITEM SEPARATOR
         POPUP "Блоки &кода"
         BEGIN
             MENUITEM "Свора&чивание блоков кода",               IDM_VIEW_FOLDING
-            MENUITEM "Свернуть/ра&звернуть блок\tCtrl+Alt+F", IDM_VIEW_TOGGLEFOLDS
+            MENUITEM "Свернуть/ра&звернуть блок\tCtrl+Alt+F",   IDM_VIEW_TOGGLEFOLDS
             MENUITEM SEPARATOR
             MENUITEM "Перейти к следующему &блоку\tAlt+ +",     CMD_FOLDJUMPDOWN
             MENUITEM "Перейти к &предыдущему блоку\tAlt+ –",    CMD_FOLDJUMPUP
             MENUITEM SEPARATOR
-            MENUITEM "&Свернуть блок\tAlt+ ←",          CMD_FOLDCOLLAPSE
-            MENUITEM "&Развернуть блок\tAlt+ →",        CMD_FOLDEXPAND
+            MENUITEM "&Свернуть блок\tAlt+ ←",                  CMD_FOLDCOLLAPSE
+            MENUITEM "&Развернуть блок\tAlt+ →",                CMD_FOLDEXPAND
         END
-        POPUP "&Рабо&чая область"
+        POPUP "Рабо&чая область"
         BEGIN
             MENUITEM "Фокусировка просмотра\tCtrl+Alt+V",           IDM_VIEW_TOGGLE_VIEW
+            POPUP "Режим просмотра"
+            BEGIN
+                MENUITEM "Сворачивание",                            IDM_VIEW_FV_FOLD
+                MENUITEM "Закладка",                                IDM_VIEW_FV_BOOKMARK
+                MENUITEM "Подсветка",                               IDM_VIEW_FV_HIGHLIGHT
+                MENUITEM "Закладка и сворачивание",                 IDM_VIEW_FV_BKMRKFOLD
+                MENUITEM "Подсветка и сворачивание",                IDM_VIEW_FV_HIGHLGFOLD
+            END
+            MENUITEM SEPARATOR
             MENUITEM "Слежение за фа&йлом",                         IDM_VIEW_CHASING_DOCTAIL
             MENUITEM "Прокрутка за пределы последней строки",       IDM_VIEW_SCROLLPASTEOF
             MENUITEM "Показывать &подсказку для гиперссылок",       IDM_VIEW_SHOW_HYPLNK_CALLTIP
         END
+        MENUITEM SEPARATOR
         POPUP "Панел&и"
         BEGIN
             MENUITEM "Показать панель &меню",               IDM_VIEW_MENUBAR
@@ -406,11 +430,13 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Общий &шрифт по умолчанию...\tAlt+F12",                   IDM_VIEW_FONT
         MENUITEM "Шрифт по умолчанию для &текущей схемы...\tCtrl+Alt+F12",  IDM_VIEW_CURRENTSCHEME
+        MENUITEM SEPARATOR
+        MENUITEM "Темный режим Windows",                                    IDM_VIEW_WIN_DARK_MODE
         END
     POPUP "&Настройки"
     BEGIN
         MENUITEM "Заменять табуляцию &пробелами",               IDM_VIEW_TABSASSPACES
-        MENUITEM "&Настройка табуляции...\tCtrl+T",             IDM_VIEW_TABSETTINGS
+        MENUITEM "Настройка &табуляции...\tCtrl+T",             IDM_VIEW_TABSETTINGS
         MENUITEM "Настройка переноса &строк...",                IDM_VIEW_WORDWRAPSETTINGS
         MENUITEM "Настро&йка длинных строк...",                 IDM_VIEW_LONGLINESETTINGS
         MENUITEM "Авто&матический отступ текста",               IDM_VIEW_AUTOINDENTTEXT
@@ -430,7 +456,7 @@ BEGIN
             MENUITEM "&Закрыть Notepad3",                   IDM_VIEW_ESCEXIT
         END
         MENUITEM "Сохранять перед запуском инструментов",   IDM_VIEW_SAVEBEFORERUNNINGTOOLS
-        MENUITEM "Calculate Tiny-E&xpressions",     IDM_VIEW_EVALTINYEXPRONSEL
+        MENUITEM "Вычислять простые в&ыражения",            IDM_VIEW_EVALTINYEXPRONSEL
         MENUITEM SEPARATOR
         POPUP "&История"
         BEGIN
@@ -452,16 +478,21 @@ BEGIN
             MENUITEM "&Сворачивать в панель уведомлений",    IDM_VIEW_MINTOTRAY
             MENUITEM "Полупрозрачный &режим\tAlt+G",         IDM_VIEW_TRANSPARENT
         END
-        POPUP "&Технологии"
+        POPUP "Тех&нологии"
         BEGIN
             POPUP "&Рендеринг"
             BEGIN
                 MENUITEM "DirectWrite (&Direct2D)",          IDM_SET_RENDER_TECH_D2D
                 MENUITEM "DirectWrite &Retain",              IDM_SET_RENDER_TECH_D2DRETAIN
                 MENUITEM "Direct&Write GDI DC",              IDM_SET_RENDER_TECH_D2DDC
-                MENUITEM "&GDI (без лигатур)",               IDM_SET_RENDER_TECH_DEFAULT
+                MENUITEM "&GDI (без лигатур)",               IDM_SET_RENDER_TECH_GDI
             END
-            POPUP "Направление письма"
+            POPUP "R&TL макет (GDI)"
+            BEGIN
+                MENUITEM "&Область редактирования",          IDM_SET_RTL_LAYOUT_EDIT
+                MENUITEM "&Другие диалоги",                  IDM_SET_RTL_LAYOUT_DLG
+            END
+            POPUP "&Направление письма"
             BEGIN
                 MENUITEM "Нет",                              IDM_SET_BIDIRECTIONAL_NONE
                 MENUITEM "Слева направо",                    IDM_SET_BIDIRECTIONAL_L2R
@@ -491,38 +522,50 @@ IDR_MUI_POPUPMENU MENU
 BEGIN
     POPUP "+"
     BEGIN
-        MENUITEM "Открыть &гиперссылку",        CMD_OPEN_HYPERLINK
+        MENUITEM "Открыть гиперссылку",        CMD_OPEN_HYPERLINK
         MENUITEM SEPARATOR
-        MENUITEM "&Отмена",                     IDM_EDIT_UNDO
-        MENUITEM "&Повтор",                     IDM_EDIT_REDO
+        MENUITEM "Отмена",                     IDM_EDIT_UNDO
+        MENUITEM "Повтор",                     IDM_EDIT_REDO
         MENUITEM SEPARATOR
-        MENUITEM "&Вырезать",                   IDM_EDIT_CUT
-        MENUITEM "&Копировать",                 IDM_EDIT_COPY
-        MENUITEM "Вст&авить",                   IDM_EDIT_PASTE
-        MENUITEM "&Удалить",                    IDM_EDIT_CLEAR
+        MENUITEM "Вырезать",                   IDM_EDIT_CUT
+        MENUITEM "Копировать",                 IDM_EDIT_COPY
+        MENUITEM "Вставить",                   IDM_EDIT_PASTE
+        MENUITEM "Удалить",                    IDM_EDIT_CLEAR
         MENUITEM SEPARATOR
-        MENUITEM "Выделить в&сё",               IDM_EDIT_SELECTALL
+        MENUITEM "Выделить всё",               IDM_EDIT_SELECTALL
         MENUITEM SEPARATOR
-        MENUITEM "Свернуть/развернуть &блок",   IDM_VIEW_TOGGLE_CURRENT_FOLD
+        MENUITEM "Свернуть/развернуть блок",   IDM_VIEW_TOGGLE_CURRENT_FOLD
         MENUITEM SEPARATOR
-        MENUITEM "Открыть веб-действие &1",     CMD_WEBACTION1
-        MENUITEM "Открыть веб-действие &2",     CMD_WEBACTION2
+        MENUITEM "Открыть веб-действие 1",     CMD_WEBACTION1
+        MENUITEM "Открыть веб-действие 2",     CMD_WEBACTION2
+        MENUITEM "Открыть Проводник",          IDM_FILE_EXPLORE_DIR
     END
     POPUP "+"
     BEGIN
-        MENUITEM "Показать панель &меню",               IDM_VIEW_MENUBAR
-        MENUITEM "Показать &панель инструментов",       IDM_VIEW_TOOLBAR
-        MENUITEM "Показать &строку состояния",          IDM_VIEW_STATUSBAR
+        MENUITEM "Показать панель меню",               IDM_VIEW_MENUBAR
+        MENUITEM "Показать панель инструментов",       IDM_VIEW_TOOLBAR
+        MENUITEM "Показать строку состояния",          IDM_VIEW_STATUSBAR
         MENUITEM SEPARATOR
-        MENUITEM "&Загрузить тему панели...",           IDM_VIEW_LOADTHEMETB
-        MENUITEM "&Настроить панель инструментов...",   IDM_VIEW_CUSTOMIZETB
-        MENUITEM "Пе&реключить панели инструментов",    IDM_VIEW_TOGGLETB
-        MENUITEM "&DPI-масштабирование панели",         IDM_VIEW_DPISCALETB
+        MENUITEM "Загрузить тему панели...",           IDM_VIEW_LOADTHEMETB
+        MENUITEM "Настроить панель инструментов...",   IDM_VIEW_CUSTOMIZETB
+        MENUITEM "Переключить панели инструментов",    IDM_VIEW_TOGGLETB
+        MENUITEM "DPI-масштабирование панели",         IDM_VIEW_DPISCALETB
     END
     POPUP "+"
     BEGIN
-        MENUITEM "Открыть Notepad3",                    IDM_TRAY_RESTORE
-        MENUITEM "Закрыть Notepad3",                    IDM_TRAY_EXIT
+        MENUITEM "Удалить маркер",                     IDM_EDIT_CLEAR_MARKER
+        MENUITEM "Вырезать строки с маркером",         IDM_EDIT_CUT_MARKED
+        MENUITEM "Копировать строки с маркером",       IDM_EDIT_COPY_MARKED
+        MENUITEM "Удалить строки с маркером",          IDM_EDIT_DELETE_MARKED
+        MENUITEM SEPARATOR
+        MENUITEM "Сворачивание блоков кода",           IDM_VIEW_FOLDING
+        MENUITEM "Номера строк",                       IDM_VIEW_LINENUMBERS
+        MENUITEM "Отступ для закладок",                IDM_VIEW_BOOKMARK_MARGIN
+    END
+    POPUP "+"
+    BEGIN
+        MENUITEM "Открыть Notepad3",                   IDM_TRAY_RESTORE
+        MENUITEM "Закрыть Notepad3",                   IDM_TRAY_EXIT
     END
 END
 

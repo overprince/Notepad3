@@ -59,7 +59,6 @@ BEGIN
     BEGIN
         MENUITEM "&Nuwe\tCtrl+N",                                   IDM_FILE_NEW
         MENUITEM "Maak &Oop...\tCtrl+O",                            IDM_FILE_OPEN
-        MENUITEM "Ke&er Terug\tF5",                                 IDM_FILE_REVERT
         MENUITEM "S&toor\tCtrl+S",                                  IDM_FILE_SAVE
         MENUITEM "Stoor &As...\tF6",                                IDM_FILE_SAVEAS
         MENUITEM "Stoor &Kopie...\tCtrl+F6",                        IDM_FILE_SAVECOPY
@@ -69,11 +68,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Stel Enkripsie &Wagwoordfrase...",        IDM_SETPASS
         MENUITEM SEPARATOR
-        POPUP "Pad na knipbord"
+        POPUP "Pad na &knipbord"
         BEGIN
             MENUITEM "Slegs Kopieer &Lêernaam\tCtrl+F9",        IDM_EDIT_INSERT_FILENAME
-            MENUITEM "Slegs Kopieër &Gids-pad",           IDM_EDIT_INSERT_DIRNAME
-            MENUITEM "Kopieer &Volledige Pad\tCtrl+Shift+F9",      IDM_EDIT_INSERT_PATHNAME
+            MENUITEM "Slegs Kopieër &Gids-pad",                 IDM_EDIT_INSERT_DIRNAME
+            MENUITEM "Kopieer &Volledige Pad\tCtrl+Shift+F9",   IDM_EDIT_INSERT_PATHNAME
         END
         POPUP "&Begin"
         BEGIN
@@ -91,29 +90,37 @@ BEGIN
             MENUITEM "Web Sjabloon &1\tCtrl+Shift+1",       CMD_WEBACTION1
             MENUITEM "Web Sjabloon &2\tCtrl+Shift+2",       CMD_WEBACTION2
             MENUITEM SEPARATOR
-            MENUITEM "Maak File &Explorer Oop",             IDM_FILE_EXPLORE_DIR
+            MENUITEM "Maak &File Explorer Oop",             IDM_FILE_EXPLORE_DIR
         END
         MENUITEM SEPARATOR
+        MENUITEM "Keer terug &van Lêer af\tF5",             IDM_FILE_REVERT
         POPUP "&Enkodering"
         BEGIN
-            MENUITEM "&ANSI",                               IDM_ENCODING_ANSI
-            MENUITEM "&Unicode",                            IDM_ENCODING_UNICODE
-            MENUITEM "Unicode &Big Endian",                 IDM_ENCODING_UNICODEREV
-            MENUITEM "UTF-&8\tShift+F8",                    IDM_ENCODING_UTF8
-            MENUITEM "UTF-8 with &Signature",               IDM_ENCODING_UTF8SIGN
-            MENUITEM "&Meer...\tF9",                        IDM_ENCODING_SELECT
+            POPUP "&Keer terug van Lêer af as"
+            BEGIN
+                MENUITEM "&Verstek (Instelling)",           CMD_RECODEDEFAULT
+                MENUITEM "A&NSI\tCtrl+Shift+A",             CMD_RECODEANSI
+                MENUITEM "&OEM\tCtrl+Shift+O",              CMD_RECODEOEM
+                MENUITEM "&GB18030\tCtrl+Shift+F10",        CMD_RECODEGB18030
+                MENUITEM SEPARATOR
+                MENUITEM "ASCII as UT&F-8\tCtrl+Shift+F8",  CMD_RELOADASCIIASUTF8
+                MENUITEM "Dwing U&CHARDET-analise",         CMD_RELOADFORCEDETECTION
+                MENUITEM "&Ignoreer Kodering Tags\tAlt+F8", CMD_RELOADNOFILEVARS
+                MENUITEM SEPARATOR
+                MENUITEM "&Meer Enkodering...\tF8",         IDM_ENCODING_RECODE
+            END
+            POPUP "&Stel dokument as"
+            BEGIN
+                MENUITEM "&ANSI",                           IDM_ENCODING_ANSI
+                MENUITEM "&Unicode",                        IDM_ENCODING_UNICODE
+                MENUITEM "Unicode &Big Endian",             IDM_ENCODING_UNICODEREV
+                MENUITEM "UTF-&8\tShift+F8",                IDM_ENCODING_UTF8
+                MENUITEM "UTF-8 with &Signature",           IDM_ENCODING_UTF8SIGN
+                MENUITEM SEPARATOR
+                MENUITEM "&Meer Enkodering...\tF9",         IDM_ENCODING_SELECT
+            END
             MENUITEM SEPARATOR
-            MENUITEM "Hercodeer na &Standaard",                CMD_RECODEDEFAULT
-            MENUITEM "Hercodeer na &ANSI\tCtrl+Shift+A",       CMD_RECODEANSI
-            MENUITEM "Hercodeer na &OEM\tCtrl+Shift+O",        CMD_RECODEOEM
-            MENUITEM "Hercodeer na &GB18030\tCtrl+Shift+F10",  CMD_RECODEGB18030
-            MENUITEM "Hercodeer na UCHARDET-analise",          CMD_RELOADFORCEDETECTION
-            MENUITEM SEPARATOR
-            MENUITEM "ASCII as UTF-&8\tCtrl+Shift+F8",      CMD_RELOADASCIIASUTF8
-            MENUITEM "Ignoreer Kodering &Tags\tAlt+F8",     CMD_RELOADNOFILEVARS
-            MENUITEM "&Herkodeer...\tF8",                   IDM_ENCODING_RECODE
-            MENUITEM SEPARATOR
-            MENUITEM "Stel &Standaard...",                  IDM_ENCODING_SETDEFAULT
+            MENUITEM "Stel Kodering Stan&daardinstellings...",          IDM_ENCODING_SETDEFAULT
         END
         POPUP "L&yn Einde"
         BEGIN
@@ -196,7 +203,7 @@ BEGIN
             MENUITEM "Ver&wyder Blank Lyne\tCtrl+Alt+B",     IDM_EDIT_REMOVEBLANKLINES
             MENUITEM "Verwyder D&uplikaatlyne\tCtrl+Alt+D",  IDM_EDIT_REMOVEDUPLICATELINES
         END
-        POPUP "&Seleksie"
+        POPUP "Sele&ksie"
         BEGIN
             MENUITEM "&Inkeep",                             IDM_EDIT_INDENT
             MENUITEM "&Ontkeep",                            IDM_EDIT_UNINDENT
@@ -229,7 +236,7 @@ BEGIN
             MENUITEM "&Bring Lyne in Lyn...\tAlt+J",        IDM_EDIT_ALIGN
             MENUITEM "&Sorteer Lyne...\tAlt+O",             IDM_EDIT_SORTLINES
         END
-        POPUP "Co&nvert"
+        POPUP "Con&vert"
         BEGIN
             MENUITEM "&Hoofletters\tCtrl+Shift+U",              IDM_EDIT_CONVERTUPPERCASE
             MENUITEM "&Kleinletter\tCtrl+U",                    IDM_EDIT_CONVERTLOWERCASE
@@ -238,32 +245,32 @@ BEGIN
             MENUITEM "&Titel Case\tCtrl+Alt+I",                 IDM_EDIT_TITLECASE
             MENUITEM "&Sin Case\tCtrl+Alt+O",                   IDM_EDIT_SENTENCECASE
             MENUITEM SEPARATOR
-            MENUITEM "&Tabifiseer Seleksie\tCtrl+Shift+T",      IDM_EDIT_CONVERTSPACES
+            MENUITEM "T&abifiseer Seleksie\tCtrl+Shift+T",      IDM_EDIT_CONVERTSPACES
             MENUITEM "&On-Tabifiseer Seleksie\tCtrl+Shift+S",   IDM_EDIT_CONVERTTABS
             MENUITEM SEPARATOR
             MENUITEM "Ta&bifiseer Inkeep\tCtrl+Alt+T",          IDM_EDIT_CONVERTSPACES2
             MENUITEM "On-Tabi&fiseer Inkeep\tCtrl+Alt+S",       IDM_EDIT_CONVERTTABS2
             MENUITEM SEPARATOR
-            MENUITEM "&URL Kodeer\tCtrl+Shift+E",                    IDM_EDIT_URLENCODE
+            MENUITEM "URL Kod&eer\tCtrl+Shift+E",                    IDM_EDIT_URLENCODE
             MENUITEM "URL &Dekodeer\tCtrl+Shift+R",                  IDM_EDIT_URLDECODE
             MENUITEM SEPARATOR
-            MENUITEM "&Karakter na Hex\tCtrl+Alt+X",                 IDM_EDIT_CHAR2HEX
-            MENUITEM "&Hex an Karakters\tCtrl+Alt+C",                IDM_EDIT_HEX2CHAR
+            MENUITEM "Karakter na &Hex\tCtrl+Alt+X",                 IDM_EDIT_CHAR2HEX
+            MENUITEM "Hex an &Karakters\tCtrl+Alt+C",                IDM_EDIT_HEX2CHAR
         END
         POPUP "&Insetsel"
         BEGIN
-            MENUITEM "&Nuwe Lyn Hierbo\tCtrl+Enter",            CMD_INSERTNEWLINE
+            MENUITEM "Nuwe &Lyn Hierbo\tCtrl+Enter",            CMD_INSERTNEWLINE
             MENUITEM SEPARATOR
-            MENUITEM "&HTML/XML Tag...\tAlt+X",                 IDM_EDIT_INSERT_TAG
+            MENUITEM "HT&ML/XML Tag...\tAlt+X",                 IDM_EDIT_INSERT_TAG
             MENUITEM SEPARATOR
-            MENUITEM "&Koderingsidentifiseerder\tCtrl+F8",      IDM_EDIT_INSERT_ENCODING
+            MENUITEM "Koderings&identifiseerder\tCtrl+F8",      IDM_EDIT_INSERT_ENCODING
             MENUITEM SEPARATOR
-            MENUITEM "&Tyd/Datum (Kort Form)\tCtrl+F5",         IDM_EDIT_INSERT_SHORTDATE
+            MENUITEM "Tyd/Datum (&Kort Form)\tCtrl+F5",         IDM_EDIT_INSERT_SHORTDATE
             MENUITEM "Tyd/Datum (&Lang Form)\tCtrl+Shift+F5",   IDM_EDIT_INSERT_LONGDATE
-            MENUITEM "&Current Timestamp",                      CMD_INSERT_TIMESTAMP
+            MENUITEM "Huidige &Tydstempel",                     CMD_INSERT_TIMESTAMP
             MENUITEM "&Opdateer Tydstempel\tShift+F5",          CMD_UPDATE_TIMESTAMPS
             MENUITEM SEPARATOR
-            MENUITEM "&Lyn Kommentaar (Toggle)\tCtrl+Q",        IDM_EDIT_LINECOMMENT
+            MENUITEM "L&yn Kommentaar (Toggle)\tCtrl+Q",        IDM_EDIT_LINECOMMENT
             MENUITEM "&Stroom Kommentaar\tCtrl+Shift+Q",        IDM_EDIT_STREAMCOMMENT
         END
         POPUP "&Diverse"
@@ -298,10 +305,10 @@ BEGIN
             MENUITEM "&Maak Alles Skoon\tAlt+F2",                   BME_EDIT_BOOKMARKCLEAR
         END
         MENUITEM SEPARATOR
-        POPUP "&Soek"
+        POPUP "S&oek"
         BEGIN
             MENUITEM "&Vind...\tCtrl+F",                             IDM_EDIT_FIND
-            MENUITEM "&Stoor Vind Text\tAlt+F3",                     IDM_EDIT_SAVEFIND
+            MENUITEM "S&toor Vind Text\tAlt+F3",                     IDM_EDIT_SAVEFIND
             MENUITEM "Vind V&olgende\tF3",                           IDM_EDIT_FINDNEXT
             MENUITEM "Vind Vo&rige\tShift+F3",                       IDM_EDIT_FINDPREV
             MENUITEM "Vind Volgende S&eleksie\tCtrl+F3",             CMD_FINDNEXTSEL
@@ -324,8 +331,14 @@ BEGIN
         MENUITEM "Wys Lyn &Einde\tCtrl+Shift+9",            IDM_VIEW_SHOWEOLS
         MENUITEM SEPARATOR
         MENUITEM "Skakel &Hotspots\tCtrl+Alt+W",            IDM_VIEW_HYPERLINKHOTSPOTS
-        MENUITEM "&Kleur Definisie Hotspots",               IDM_VIEW_COLORDEFHOTSPOTS
-        MENUITEM "Highlight &Unicode-Points",               IDM_VIEW_UNICODE_POINTS
+        POPUP "&Kleur Definisie Hotspots",
+        BEGIN
+            MENUITEM "&AF",                                 IDM_VIEW_COLORDEFHOTSPOTS
+            MENUITEM "&RGB+A"                               IDM_VIEW_COLOR_RGBA
+            MENUITEM "&A+RGB"                               IDM_VIEW_COLOR_ARGB
+            MENUITEM "&BGRA"                                IDM_VIEW_COLOR_BGRA
+        END
+        MENUITEM "Merk &Unicode-punte",               		IDM_VIEW_UNICODE_POINTS
         MENUITEM "&Visuele Hakie Passing\tCtrl+Shift+V",    IDM_VIEW_MATCHBRACES
         POPUP "Merk Huidi&ge Lyn\tCtrl+Shift+I"
         BEGIN
@@ -336,25 +349,26 @@ BEGIN
         POPUP "Mer&k Voorvalle"
         BEGIN
             MENUITEM "&Aktiewe\tAlt+A",                     IDM_VIEW_MARKOCCUR_ONOFF
+            MENUITEM "Gebruik &Boekmerke ook",              IDM_VIEW_MARKOCCUR_BOOKMARKS
             MENUITEM SEPARATOR
-            MENUITEM "Pas Slegs Sigbaar Aan",               IDM_VIEW_MARKOCCUR_VISIBLE
+            MENUITEM "Pas Slegs Si&gbaar Aan",              IDM_VIEW_MARKOCCUR_VISIBLE
             MENUITEM SEPARATOR
             MENUITEM "Pas &Geval Sensitief",                IDM_VIEW_MARKOCCUR_CASE
             POPUP "Pas &Slegs Die Hele Woord Aan"
             BEGIN
-                MENUITEM "AF",                              IDM_VIEW_MARKOCCUR_WNONE
+                MENUITEM "&AF",                             IDM_VIEW_MARKOCCUR_WNONE
                 MENUITEM "Pas &Geselekteerde Woord",        IDM_VIEW_MARKOCCUR_WORD
                 MENUITEM "Pas &Huidige Woord",              IDM_VIEW_MARKOCCUR_CURRENT
             END
         END
         MENUITEM SEPARATOR
         MENUITEM "Lyn &Nommers\tCtrl+Shift+N",              IDM_VIEW_LINENUMBERS
-        MENUITEM "Seleksie &Kantlyne\tCtrl+Shift+M",        IDM_VIEW_MARGIN
+        MENUITEM "Boek&merk Ruglyn\tCtrl+Shift+M",          IDM_VIEW_BOOKMARK_MARGIN
         MENUITEM SEPARATOR
         POPUP "&Vou"
         BEGIN
             MENUITEM "&Kode Vou",                           IDM_VIEW_FOLDING
-            MENUITEM "&Wissel Voue\tCtrl+Alt+F",          IDM_VIEW_TOGGLEFOLDS
+            MENUITEM "&Wissel Voue\tCtrl+Alt+F",            IDM_VIEW_TOGGLEFOLDS
             MENUITEM SEPARATOR
             MENUITEM "Spring &Volgende Vou\tAlt+ +",        CMD_FOLDJUMPDOWN
             MENUITEM "&Spring Vorige Vou\tAlt+ –",          CMD_FOLDJUMPUP
@@ -364,11 +378,21 @@ BEGIN
         END
         POPUP "Ver&toning"
         BEGIN
-            MENUITEM "Gefokusde Aansig\tCtrl+Alt+V",        IDM_VIEW_TOGGLE_VIEW
+            MENUITEM "Ge&fokusde Aansig\tCtrl+Alt+V",       IDM_VIEW_TOGGLE_VIEW
+            POPUP "Kykmodus"
+            BEGIN
+                MENUITEM "Vou",                            	IDM_VIEW_FV_FOLD
+                MENUITEM "Boekmerk",                        IDM_VIEW_FV_BOOKMARK
+                MENUITEM "Merk",                            IDM_VIEW_FV_HIGHLIGHT
+                MENUITEM "Boekmerk && Vou",                	IDM_VIEW_FV_BKMRKFOLD
+                MENUITEM "Merk && Vou",                 	IDM_VIEW_FV_HIGHLGFOLD
+            END
+            MENUITEM SEPARATOR
             MENUITEM "&Monitering Log",                     IDM_VIEW_CHASING_DOCTAIL
             MENUITEM "Rol na Einde Van Die &Lêer",          IDM_VIEW_SCROLLPASTEOF
             MENUITEM "Wys &Hiperskakel Nutsmiddelwenk",     IDM_VIEW_SHOW_HYPLNK_CALLTIP
         END
+        MENUITEM SEPARATOR
         POPUP "P&anele"
         BEGIN
             MENUITEM "Wys &Menubalk",                       IDM_VIEW_MENUBAR
@@ -384,17 +408,17 @@ BEGIN
         BEGIN
             MENUITEM "Zoem &In\tCtrl+ +",                   IDM_VIEW_ZOOMIN
             MENUITEM "Zoem &Uit\tCtrl+ –",                  IDM_VIEW_ZOOMOUT
-            MENUITEM "Herstel &Zoem\tCtrl+0",               IDM_VIEW_RESETZOOM
+            MENUITEM "He&rstel Zoem\tCtrl+0",               IDM_VIEW_RESETZOOM
         END
         POPUP "&Posisie"
         BEGIN
-            MENUITEM "Kopie Posisie Args\tCtrl+Shift+K",             CMD_COPYWINPOS
-            MENUITEM "Snap na Verstek Posisie\tCtrl+Shift+P",        CMD_DEFAULTWINPOS
-            MENUITEM "Stoor as Verstek Posisie",                     CMD_SAVEASDEFWINPOS
-            MENUITEM "Herstel Gestoorde Verstek Posisie",            CMD_CLEARSAVEDWINPOS
-            MENUITEM "Snap na Aanvanklike Posisie\tCtrl+F11",        CMD_INITIALWINPOS
-            MENUITEM "Wissel Volle Area Posisie\tF11",               CMD_FULLSCRWINPOS
-            MENUITEM "Klewerige Venster &Posisie",                   IDM_VIEW_STICKYWINPOS
+            MENUITEM "Kopie Posisie &Args\tCtrl+Shift+K",             CMD_COPYWINPOS
+            MENUITEM "S&nap na Verstek Posisie\tCtrl+Shift+P",        CMD_DEFAULTWINPOS
+            MENUITEM "&Stoor as Verstek Posisie",                     CMD_SAVEASDEFWINPOS
+            MENUITEM "&Herstel Gestoorde Verstek Posisie",            CMD_CLEARSAVEDWINPOS
+            MENUITEM "Snap na Aanvankl&ike Posisie\tCtrl+F11",        CMD_INITIALWINPOS
+            MENUITEM "Wissel &Volle Area Posisie\tF11",               CMD_FULLSCRWINPOS
+            MENUITEM "Klewerige Vens&ter Posisie",                    IDM_VIEW_STICKYWINPOS
         END
     END
     POPUP "&Voorkoms"
@@ -406,37 +430,39 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Globale Standaard Font...\tAlt+F12",                   IDM_VIEW_FONT
         MENUITEM "Huidige Skema se Verstek Font...\tCtrl+Alt+F12",       IDM_VIEW_CURRENTSCHEME
+        MENUITEM SEPARATOR
+        MENUITEM "Windows Dark Mode",                                    IDM_VIEW_WIN_DARK_MODE
     END
     POPUP "&Instellings"
     BEGIN
         MENUITEM "Voeg Tabbladsye in as &Spasies",                  IDM_VIEW_TABSASSPACES
         MENUITEM "&Tab Instellings...\tCtrl+T",                     IDM_VIEW_TABSETTINGS
         MENUITEM "&Woord Omslag Instellings...",                    IDM_VIEW_WORDWRAPSETTINGS
-        MENUITEM "&Lang Lyn Instellings...",                        IDM_VIEW_LONGLINESETTINGS
+        MENUITEM "L&ang Lyn Instellings...",                        IDM_VIEW_LONGLINESETTINGS
         MENUITEM "Outo-In&dent Teks",                               IDM_VIEW_AUTOINDENTTEXT
         MENUITEM "Outo-Sluit &HTML/XML\tCtrl+Shift+H",              IDM_VIEW_AUTOCLOSETAGS
         MENUITEM "O&uto-Voltooi Woorde",                            IDM_VIEW_AUTOCOMPLETEWORDS
         MENUITEM "Outo-Voltooi Le&xer-Sleutel-Woorde",              IDM_VIEW_AUTOCLEXKEYWORDS
         MENUITEM "Versnelde Woord Navi&gasie\tCtrl+Alt+A",          IDM_VIEW_ACCELWORDNAV
-        MENUITEM "Aktiveer Wysiging van reël en &Kommentaarblok",   IDM_VIEW_EDIT_LINECOMMENT
+        MENUITEM "A&ktiveer Wysiging van reël en Kommentaarblok",   IDM_VIEW_EDIT_LINECOMMENT
         MENUITEM SEPARATOR
         MENUITEM "Enkel &Lêer Instansie",                           IDM_VIEW_SINGLEFILEINSTANCE
         MENUITEM "Lêerverandering-&Kennisgewing...\tAlt+F5",        IDM_VIEW_CHANGENOTIFY
-        MENUITEM "Mute Message &Beeps",                             IDM_VIEW_MUTE_MESSAGEBEEP
-        POPUP "Esc &Sleutel Funksie"
+        MENUITEM "&Mute Message Beeps",                             IDM_VIEW_MUTE_MESSAGEBEEP
+        POPUP "&Esc Sleutel Funksie"
         BEGIN
             MENUITEM "&Geen",                                   IDM_VIEW_NOESCFUNC
             MENUITEM "&Minimaliseer Notepad3",                  IDM_VIEW_ESCMINIMIZE
             MENUITEM "M&aak Notepad3 Toe",                      IDM_VIEW_ESCEXIT
         END
         MENUITEM "Stoor Voor L&opende Tools",                   IDM_VIEW_SAVEBEFORERUNNINGTOOLS
-        MENUITEM "Calculate Tiny-E&xpressions",                 IDM_VIEW_EVALTINYEXPRONSEL
+        MENUITEM "Bereken Tiny-E&xpressions",                   IDM_VIEW_EVALTINYEXPRONSEL
         MENUITEM SEPARATOR
         POPUP "Ont&hou"
         BEGIN
-            MENUITEM "Onthou Onlangse &Lêers",              IDM_VIEW_NOSAVERECENT
-            MENUITEM "&Bewaar Caret Posisie",               IDM_VIEW_NOPRESERVECARET
-            MENUITEM "Onthou So&ekpatroon",                 IDM_VIEW_NOSAVEFINDREPL
+            MENUITEM "&Onthou Onlangse Lêers",              IDM_VIEW_NOSAVERECENT
+            MENUITEM "Bewaar &Caret Posisie",               IDM_VIEW_NOPRESERVECARET
+            MENUITEM "On&thou Soekpatroon",                 IDM_VIEW_NOSAVEFINDREPL
         END
         POPUP "&Venster"
         BEGIN
@@ -452,20 +478,25 @@ BEGIN
             MENUITEM "&Minimeer Na Die Laai",               IDM_VIEW_MINTOTRAY
             MENUITEM "&Deursigtige Modus\tAlt+G",           IDM_VIEW_TRANSPARENT
         END
-        POPUP "&Tegnologie"
+        POPUP "Teg&nologie"
         BEGIN
             POPUP "&Lewering"
             BEGIN
                 MENUITEM "DirectWrite (&Direct2D)",         	IDM_SET_RENDER_TECH_D2D
                 MENUITEM "DirectWrite &Behou",              	IDM_SET_RENDER_TECH_D2DRETAIN
                 MENUITEM "Direct&Write GDI DC",             	IDM_SET_RENDER_TECH_D2DDC
-                MENUITEM "&GDI (Geen ligature nie)",            IDM_SET_RENDER_TECH_DEFAULT
+                MENUITEM "&GDI (Geen ligature nie)",            IDM_SET_RENDER_TECH_GDI
             END
-            POPUP "Bidirectionele"
+            POPUP "R&TL Uitleg (GDI)"
             BEGIN
-                MENUITEM "Geen",                            IDM_SET_BIDIRECTIONAL_NONE
-                MENUITEM "Links na Regs",                   IDM_SET_BIDIRECTIONAL_L2R
-                MENUITEM "Regs na Links",                   IDM_SET_BIDIRECTIONAL_R2L
+                MENUITEM "&Wysig Area",                      IDM_SET_RTL_LAYOUT_EDIT
+                MENUITEM "Ander &Dialogs",                   IDM_SET_RTL_LAYOUT_DLG
+            END
+            POPUP "&Bidirectionele"
+            BEGIN
+                MENUITEM "Geen",                             IDM_SET_BIDIRECTIONAL_NONE
+                MENUITEM "&Links na Regs",                   IDM_SET_BIDIRECTIONAL_L2R
+                MENUITEM "&Regs na Links",                   IDM_SET_BIDIRECTIONAL_R2L
             END
         END
         POPUP "Gevorderde &Konfigurasie"
@@ -491,33 +522,45 @@ IDR_MUI_POPUPMENU MENU
 BEGIN
     POPUP "+"
     BEGIN
-        MENUITEM "Maak &Skakel Oop",                        CMD_OPEN_HYPERLINK
+        MENUITEM "Maak Skakel Oop",                         CMD_OPEN_HYPERLINK
         MENUITEM SEPARATOR
-        MENUITEM "&Undo",                                   IDM_EDIT_UNDO
-        MENUITEM "&Redo",                                   IDM_EDIT_REDO
+        MENUITEM "Undo",                                    IDM_EDIT_UNDO
+        MENUITEM "Redo",                                    IDM_EDIT_REDO
         MENUITEM SEPARATOR
-        MENUITEM "Sn&y",                                    IDM_EDIT_CUT
-        MENUITEM "&Kopie",                                  IDM_EDIT_COPY
-        MENUITEM "&Plak",                                   IDM_EDIT_PASTE
-        MENUITEM "&Verwyder",                               IDM_EDIT_CLEAR
+        MENUITEM "Sny",                                     IDM_EDIT_CUT
+        MENUITEM "Kopie",                                   IDM_EDIT_COPY
+        MENUITEM "Plak",                                    IDM_EDIT_PASTE
+        MENUITEM "Verwyder",                                IDM_EDIT_CLEAR
         MENUITEM SEPARATOR
-        MENUITEM "&Kies Alles",                             IDM_EDIT_SELECTALL
+        MENUITEM "Kies Alles",                              IDM_EDIT_SELECTALL
         MENUITEM SEPARATOR
-        MENUITEM "&Wissel Huidige Vou",                     IDM_VIEW_TOGGLE_CURRENT_FOLD
+        MENUITEM "Wissel Huidige Vou",                      IDM_VIEW_TOGGLE_CURRENT_FOLD
         MENUITEM SEPARATOR
-        MENUITEM "Open Web Action &1",                      CMD_WEBACTION1
-        MENUITEM "Open Web Action &2",                      CMD_WEBACTION2
+        MENUITEM "Web Sjabloon 1",                          CMD_WEBACTION1
+        MENUITEM "Web Sjabloon 2",                          CMD_WEBACTION2
+        MENUITEM "Maak File Explorer Oop",                  IDM_FILE_EXPLORE_DIR
     END
     POPUP "+"
     BEGIN
-        MENUITEM "Wys &Menubalk",                           IDM_VIEW_MENUBAR
-        MENUITEM "Wys &Nutsbalk",                           IDM_VIEW_TOOLBAR
-        MENUITEM "Wys &Statusbalk",                         IDM_VIEW_STATUSBAR
+        MENUITEM "Wys Menubalk",                            IDM_VIEW_MENUBAR
+        MENUITEM "Wys Nutsbalk",                            IDM_VIEW_TOOLBAR
+        MENUITEM "Wys Statusbalk",                          IDM_VIEW_STATUSBAR
         MENUITEM SEPARATOR
-        MENUITEM "&Laai Toolbar Tema...",                   IDM_VIEW_LOADTHEMETB
-        MENUITEM "Pas&maak Nutsbalk...",                    IDM_VIEW_CUSTOMIZETB
-        MENUITEM "To&ggle Nutsbalke",                       IDM_VIEW_TOGGLETB
-        MENUITEM "&DPI Skaal Balk",                      IDM_VIEW_DPISCALETB
+        MENUITEM "Laai Toolbar Tema...",                    IDM_VIEW_LOADTHEMETB
+        MENUITEM "Pasmaak Nutsbalk...",                     IDM_VIEW_CUSTOMIZETB
+        MENUITEM "Toggle Nutsbalke",                        IDM_VIEW_TOGGLETB
+        MENUITEM "DPI Skaal Balk",                          IDM_VIEW_DPISCALETB
+    END
+    POPUP "+"
+    BEGIN
+        MENUITEM "Verwyder Merker",                         IDM_EDIT_CLEAR_MARKER
+        MENUITEM "Sny Lyne van Merk-tipe",              	IDM_EDIT_CUT_MARKED
+        MENUITEM "Kopieer Lyne van Merk-tipe",              IDM_EDIT_COPY_MARKED
+        MENUITEM "Skrap Lyne van Merk-tipe",             	IDM_EDIT_DELETE_MARKED
+        MENUITEM SEPARATOR
+        MENUITEM "Kode Vou",                                IDM_VIEW_FOLDING
+        MENUITEM "Lyn Nommer",                              IDM_VIEW_LINENUMBERS
+        MENUITEM "Bookmerk Ruglyn",                         IDM_VIEW_BOOKMARK_MARGIN
     END
     POPUP "+"
     BEGIN

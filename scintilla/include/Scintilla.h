@@ -31,7 +31,9 @@ __declspec(dllexport) int   Scintilla_GetSystemMetricsForDpi(int nIndex, DPI_T d
 __declspec(dllexport) int   Scintilla_AdjustWindowRectForDpi(WRCT_T* lpRect, unsigned long dwStyle, unsigned long  dwExStyle, DPI_T dpi);
 // <<<<<<<<<<<<<<<   END NON STD SCI PATCH   <<<<<<<<<<<<<<<
 
+#ifdef SCI_LEXER
 int Scintilla_LinkLexers(void);
+#endif
 
 #ifdef __cplusplus
 }
@@ -732,6 +734,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SETEDGECOLOUR 2365
 #define SCI_MULTIEDGEADDLINE 2694
 #define SCI_MULTIEDGECLEARALL 2695
+#define SCI_GETMULTIEDGECOLUMN 2749
 #define SCI_SEARCHANCHOR 2366
 #define SCI_SEARCHNEXT 2367
 #define SCI_SEARCHPREV 2368
@@ -880,8 +883,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define CARETSTYLE_BLOCK 2
 #define CARETSTYLE_OVERSTRIKE_BAR 0
 #define CARETSTYLE_OVERSTRIKE_BLOCK 0x10
-#define CARETSTYLE_BLOCK_AFTER 0x100
 #define CARETSTYLE_INS_MASK 0xF
+#define CARETSTYLE_BLOCK_AFTER 0x100
 #define SCI_SETCARETSTYLE 2512
 #define SCI_GETCARETSTYLE 2513
 #define SCI_SETINDICATORCURRENT 2500

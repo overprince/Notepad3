@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Old Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Хотите нормализовать все окончания строк в '%s'?"
 END
 
 STRINGTABLE
@@ -175,7 +177,7 @@ BEGIN
     IDS_MUI_READONLY_SAVE   "«%s» только для чтения. Сохранить в другой файл?"
     IDS_MUI_FILECHANGENOTIFY
                             "Этот файл был изменен внешней программой. Переоткрыть его?"
-    IDS_MUI_FILECHANGENOTIFY2 "Этот файл был удален. Сохранить заново?"
+    IDS_MUI_FILECHANGENOTIFY2 "Этот файл был удален. Пересохранить?"
     IDS_MUI_STICKYWINPOS    "Фиксированное положение окна включено. Любое новое окно Notepad3 будет запущено с текущими настройками положения."
     IDS_MUI_SAVEDSETTINGS   "Текущие настройки приложения были сохранены."
     IDS_MUI_CREATEINI_FAIL  "Ошибка создания конфигурационного файла."
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + Click, чтобы открыть ссылку в браузере."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Сохранение исходной метки времени изменения файла включено.\nЭта опция останется включенной для текущей сессии!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Маркеры вхождения (закладка/отметка) на исходе!"
 END
 
 STRINGTABLE
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "&Язык"
     IDS_MUI_MENU_THEMES     "&Коллекция схем"
-    IDM_THEMES_DEFAULT      "Заводские настройки"
-    IDM_THEMES_FILE_ITEM    "Стандартные настройки"
+    IDM_THEMES_DEFAULT      "&Заводские настройки"
+    IDM_THEMES_FILE_ITEM    "&Стандартные"
     IDS_MUI_STATUSBAR_PREFIXES "Ln  ,Col  ,Sel  ,Sb  ,SLn  ,Occ  ,,,,,,,Ch  ,Repl  ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Очистить всё"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Очистить историю поиска"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Очистить историю замен"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

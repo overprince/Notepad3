@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Mac Antigo (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Do you want to normalise all line endings to be '%s'?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + Click para abrir o link no navegador."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Preservação do Timestamp original de Modificação de Arquivo habilitado.\nEsta opção ficará ativa durante esta sessão!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Running out of Occurrence Markers (Bookmark/Highlight)!"
 END
 
 STRINGTABLE
@@ -232,7 +235,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MUI_TRANSL_AUTHOR   "(pt-BR) Tradução em português brasileiro por fcgouveia"
+    IDS_MUI_TRANSL_AUTHOR   "(pt-BR) Tradução em português brasileiro por JeepWillys58"
     IDS_MUI_TITLE_FIXBASE   " BASE (%s)"
     IDS_MUI_TITLE_RELCUR    " +++ %s: %s Estilo +++"
     IDS_MUI_TITLE_FIXCUR    " %s: %s Estilo"
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "&Linguagem"
     IDS_MUI_MENU_THEMES     "&Coleção de Esquemas"
-    IDM_THEMES_DEFAULT      "Padrão de Fábrica"
-    IDM_THEMES_FILE_ITEM    "Configurações Padrão"
+    IDM_THEMES_DEFAULT      "&Padrão de Fábrica"
+    IDM_THEMES_FILE_ITEM    "&Padrão"
     IDS_MUI_STATUSBAR_PREFIXES "Ln  ,Col  ,Sel  ,Sb  ,SLn  ,Occ  ,,,,,,,Ch  ,Repl  ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Clear All"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Clear Find History"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Clear Replace History"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

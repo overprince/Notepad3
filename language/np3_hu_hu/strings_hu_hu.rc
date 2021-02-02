@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Régi Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Szeretné az összes sorvéget átalakítani erre: '%s'?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + Kattintás a böngészőben való megnyitáshoz."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Az eredeti fájl módosítási idejeének megőrzése opció be van kapcsolva.\nA beállítás így marad erre a munkamenetre!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Elfogytak a találat jelölők (Könyvjelző/Kiemelés)!"
 END
 
 STRINGTABLE
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "N&yelv"
     IDS_MUI_MENU_THEMES     "&Sablon gyűjtemény"
-    IDM_THEMES_DEFAULT      "Gyári érték"
-    IDM_THEMES_FILE_ITEM    "Standard beállítások"
+    IDM_THEMES_DEFAULT      "&Gyári érték"
+    IDM_THEMES_FILE_ITEM    "&Standard"
     IDS_MUI_STATUSBAR_PREFIXES "Sor ,Oszl ,Kij  ,Sb  ,SKij ,Tal  ,,,,,,,Ch  ,Csere ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Mind törlése"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Keresési előzmények törlése"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Csere előzmények törlése"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

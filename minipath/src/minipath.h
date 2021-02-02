@@ -8,7 +8,7 @@
 *   Global definitions and declarations                                       *
 *   Based on code from metapath, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -85,10 +85,10 @@
 //==== TypeDefs ======================================
 typedef struct _wi
 {
-  int x;
-  int y;
-  int cx;
-  int cy;
+    int x;
+    int y;
+    int cx;
+    int cy;
 } WININFO;
 
 
@@ -102,58 +102,69 @@ typedef enum { TAM_ALWAYS_RUN = 0, TAM_SEND_DROP_MSG = 1, TAM_SEND_DDE_MSG = 2 }
 
 typedef struct _settings_t
 {
-  BOOL      bSaveSettings;
-  WCHAR     szQuickview[MAX_PATH];
-  WCHAR     szQuickviewParams[MAX_PATH];
-  WCHAR     g_tchFavoritesDir[MAX_PATH];
-  BOOL      bNP3sFavoritesSettings;
-  WCHAR     tchOpenWithDir[MAX_PATH];
-  WCHAR     tchToolbarButtons[512];
-  WCHAR     tchToolbarBitmap[MAX_PATH];
-  WCHAR     tchToolbarBitmapHot[MAX_PATH];
-  WCHAR     tchToolbarBitmapDisabled[MAX_PATH];
-  BOOL      bClearReadOnly;
-  BOOL      bRenameOnCollision;
-  BOOL      bSingleClick;
-  BOOL      bTrackSelect;
-  BOOL      bFullRowSelect;
-  int       iStartupDir;
-  int       iEscFunction;
-  BOOL      bFocusEdit;
-  BOOL      bAlwaysOnTop;
-  BOOL      g_bTransparentMode;
-  BOOL      bMinimizeToTray;
-  BOOL      fUseRecycleBin;
-  BOOL      fNoConfirmDelete;
-  BOOL      bShowToolbar;
-  BOOL      bShowStatusbar;
-  BOOL      bShowDriveBox;
-  int       cxGotoDlg;
-  int       cxOpenWithDlg;
-  int       cyOpenWithDlg;
-  int       cxCopyMoveDlg;
+    BOOL      bSaveSettings;
+    BOOL      bNP3sFavoritesSettings;
+    BOOL      bClearReadOnly;
+    BOOL      bRenameOnCollision;
+    BOOL      bSingleClick;
+    BOOL      bTrackSelect;
+    BOOL      bFullRowSelect;
+    int       iStartupDir;
+    int       iEscFunction;
+    BOOL      bFocusEdit;
+    BOOL      bAlwaysOnTop;
+    BOOL      bTransparentMode;
+    BOOL      bMinimizeToTray;
+    BOOL      fUseRecycleBin;
+    BOOL      fNoConfirmDelete;
+    BOOL      bShowToolbar;
+    BOOL      bShowStatusbar;
+    BOOL      bShowDriveBox;
+    int       cxGotoDlg;
+    int       cxOpenWithDlg;
+    int       cyOpenWithDlg;
+    int       cxCopyMoveDlg;
 
-  BOOL      bHasQuickview;
+    BOOL      bHasQuickview;
 
-  WCHAR     tchFilter[DL_FILTER_BUFSIZE];
-  BOOL      bNegFilter;
-  BOOL      bDefCrNoFilt;
-  BOOL      bDefCrFilter;
-  COLORREF  crNoFilt;
-  COLORREF  crFilter;
-  COLORREF  crCustom[16];
+    BOOL      bNegFilter;
+    BOOL      bDefCrNoFilt;
+    BOOL      bDefCrFilter;
+    COLORREF  crNoFilt;
+    COLORREF  crFilter;
+    COLORREF  crCustom[16];
 
-  WININFO   wi;
+    WININFO   wi;
 
-  WCHAR     szCurDir[MAX_PATH + 40];
-  DWORD     dwFillMask;
-  int       nSortFlags;
-  BOOL      fSortRev;
+    DWORD     dwFillMask;
+    int       nSortFlags;
+    BOOL      fSortRev;
+
+    WCHAR     szCurDir[MAX_PATH + 40];
+    WCHAR     szQuickview[MAX_PATH];
+    WCHAR     szQuickviewParams[MAX_PATH];
+    WCHAR     tchFavoritesDir[MAX_PATH];
+    WCHAR     tchOpenWithDir[MAX_PATH];
+    WCHAR     tchToolbarButtons[512];
+    WCHAR     tchToolbarBitmap[MAX_PATH];
+    WCHAR     tchToolbarBitmapHot[MAX_PATH];
+    WCHAR     tchToolbarBitmapDisabled[MAX_PATH];
+    WCHAR     tchFilter[DL_FILTER_BUFSIZE];
 
 } SETTINGS_T, * PSETTINGS_T;
 
 extern SETTINGS_T Settings;
 extern SETTINGS_T Defaults;
+
+
+typedef struct _settings2_t
+{
+    int      OpacityLevel;
+    int      FocusLostOpacity;
+
+} SETTINGS2_T, * PSETTINGS2_T;
+
+extern SETTINGS2_T Settings2;
 
 
 //==== Function Declarations ==================================================
@@ -182,7 +193,7 @@ void    MsgSize(HWND,WPARAM,LPARAM);
 void    MsgInitMenu(HWND,WPARAM,LPARAM);
 LRESULT MsgCommand(HWND,WPARAM,LPARAM);
 LRESULT MsgNotify(HWND,WPARAM,LPARAM);
-
+LRESULT MsgDrawItem(HWND, WPARAM, LPARAM);
 
 
 ///   End of minipath.h   \\\

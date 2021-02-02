@@ -8,11 +8,12 @@
 *   Definitions for metapath dialog boxes                                     *
 *   Based on code from metapath, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
 *******************************************************************************/
+#include <uxtheme.h>
 
 BOOL GetDirectory(HWND,int,LPWSTR,LPCWSTR,BOOL);
 BOOL GetDirectory2(HWND,int,LPWSTR,int);
@@ -47,5 +48,21 @@ INT_PTR CALLBACK FindTargetDlgProc(HWND, UINT, WPARAM, LPARAM);
 int  ErrorMessage(int, UINT, ...);
 DWORD MsgBoxLastError(LPCWSTR lpszMessage, DWORD dwErrID);
 DWORD DbgMsgBoxLastError(LPCWSTR lpszMessage, DWORD dwErrID);
+
+#define SetExplorerTheme(hwnd) SetWindowTheme((hwnd), L"Explorer", NULL)
+
+inline void InitWindowCommon(HWND hwnd, BOOL bSetExplorerTheme)
+{
+    if (bSetExplorerTheme)
+    {
+        SetExplorerTheme(hwnd);
+    }
+    else
+    {
+        SetWindowTheme(hwnd, L"", L"");
+    }
+    //SetWindowLayoutRTL(hwnd, Settings.DialogsLayoutRTL);
+}
+
 
 // End of Dialogs.h

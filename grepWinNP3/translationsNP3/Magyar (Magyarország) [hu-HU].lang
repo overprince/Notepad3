@@ -61,17 +61,25 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr "Ugrás Stefan Küng weboldalára"
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr "<a>a grepWinNP3 névjegye...</a>"
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
 msgstr "A grepWinNP3 névjegye"
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
-msgstr "Sablonokhoz ad"
+msgid "Add to Presets..."
+msgstr "Sablonokhoz ad..."
 
 #. Resource IDs: (155)
 msgid "All Files"
@@ -208,7 +216,7 @@ msgstr "Kit."
 
 #. Resource IDs: (1039)
 msgid "File Names match:\nuse '|' to separate multiple text match patterns, prepen&d '-' to exclude"
-msgstr "Illeszkedő fájlnevek:\nKülönböző illeszkedési minták elválasztásához: '|', előtta '-' jel a kihagyáshoz"
+msgstr "Illeszkedő fájlnevek:\nKülönböző illeszkedési minták elválasztásához: '|', előtt a '-' jel a kihagyáshoz"
 
 #. Resource IDs: (1059)
 msgid "Files"
@@ -248,7 +256,7 @@ msgstr "Érvénytelen útvonal!"
 
 #. Resource IDs: (161)
 msgid "Inverse search (NOT searchstring)"
-msgstr "Inverz keresés (NOT kereső szüveg)"
+msgstr "Inverz keresés (NOT keresési szöveg)"
 
 #. Resource IDs: (1019)
 msgid "KB"
@@ -324,12 +332,12 @@ msgid "Preset name"
 msgstr "Sablon neve"
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
-msgstr "Sablonok"
+msgid "Presets..."
+msgstr "Sablonok..."
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
-msgstr "Súgó: F1"
+msgid "Press F1 for help..."
+msgstr "Súgó: F1..."
 
 #. Resource IDs: (154)
 msgid "Programs"
@@ -421,8 +429,8 @@ msgid "Select path to search"
 msgstr "Válassza ki a keresés útvonalát"
 
 #. Resource IDs: (1071)
-msgid "Settings"
-msgstr "Beállítások"
+msgid "Settings..."
+msgstr "Beállítások..."
 
 #. Resource IDs: (133)
 msgid "Size"
@@ -433,8 +441,8 @@ msgid "Size is"
 msgstr "Méret:"
 
 #. Resource IDs: (1028)
-msgid "Test regex"
-msgstr "Teszt regex"
+msgid "Test regex..."
+msgstr "Teszt regex..."
 
 #. Resource IDs: (136)
 msgid "Text"
@@ -463,10 +471,6 @@ msgstr "Fájlok UTF-8-ként kezelése"
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
 msgstr "Fájlok binárisként kezelése"
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
-msgstr "Ugrás Stefan Küng weboldalára"
 
 #. Resource IDs: (116)
 msgid "a regular expression used for searching. Press F1 for more info."
@@ -574,6 +578,10 @@ msgstr "Keresés itt: '%s'"
 msgid "search string is empty"
 msgstr "A keresett szöveg üres"
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr "Új grepWinNP3 indítása"
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr "Az útvonal(ak), ahol rekurzívan keresünk.\nElválasztásra használja a '|' jelet.\nPéldául: c:\\temp|d:\\logs"
@@ -581,6 +589,10 @@ msgstr "Az útvonal(ak), ahol rekurzívan keresünk.\nElválasztásra használja
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr "Ki lehet hagyni könyvtárakat, pl. CVS fájlokat és képeket.\nPéldául: ^(CVS|images)$\nFigyelem: a '.svn' mappák rejtettek Windows-on, így bennük általában nem keres."
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -597,4 +609,8 @@ msgstr "Párhuzamos feldolgozók max. száma"
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
 msgstr "Ez hozzáadja a 'Megnyitás a szerkesztőben' pontot a helyi menüben"
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
+msgstr "Mindig felül"
 

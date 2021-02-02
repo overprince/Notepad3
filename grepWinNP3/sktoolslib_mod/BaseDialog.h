@@ -1,4 +1,4 @@
-// sktoolslib - common files for SK tools
+﻿// sktoolslib - common files for SK tools
 
 // Copyright (C) 2012-2013, 2016, 2020 - Stefan Kueng
 
@@ -42,48 +42,51 @@ public:
     {
         m_margins = {};
     }
-    INT_PTR         DoModal(HINSTANCE hInstance, int resID, HWND hWndParent);
-    INT_PTR         DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT idAccel);
-    void            ShowModeless(HINSTANCE hInstance, int resID, HWND hWndParent);
-    static BOOL     IsDialogMessage(LPMSG lpMsg);
-    HWND            Create(HINSTANCE hInstance, int resID, HWND hWndParent);
-    BOOL            EndDialog(HWND hDlg, INT_PTR nResult);
-    void            AddToolTip(UINT ctrlID, LPCWSTR text);
-    void            AddToolTip(HWND hWnd, LPCWSTR text);
-    bool            IsCursorOverWindowBorder();
-    void            RefreshCursor();
-    void            ShowEditBalloon(UINT nId, LPCWSTR title, LPCWSTR text, int icon = TTI_ERROR);
+    INT_PTR     DoModal(HINSTANCE hInstance, int resID, HWND hWndParent);
+    INT_PTR     DoModal(HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent);
+    INT_PTR     DoModal(HINSTANCE hInstance, int resID, HWND hWndParent, UINT idAccel);
+    void        ShowModeless(HINSTANCE hInstance, int resID, HWND hWndParent, bool show = true);
+    void        ShowModeless(HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent, bool show = true);
+    static BOOL IsDialogMessage(LPMSG lpMsg);
+    HWND        Create(HINSTANCE hInstance, int resID, HWND hWndParent);
+    BOOL        EndDialog(HWND hDlg, INT_PTR nResult);
+    void        AddToolTip(UINT ctrlID, LPCWSTR text);
+    void        AddToolTip(HWND hWnd, LPCWSTR text);
+    bool        IsCursorOverWindowBorder();
+    void        RefreshCursor();
+    void        ShowEditBalloon(UINT nId, LPCWSTR title, LPCWSTR text, int icon = TTI_ERROR);
     /**
      * Sets the transparency of the window.
      * \remark note that this also sets the WS_EX_LAYERED style!
      */
-    void            SetTransparency(BYTE alpha, COLORREF color = 0xFF000000);
+    void SetTransparency(BYTE alpha, COLORREF color = 0xFF000000);
 
     /**
      * Wrapper around the CWnd::EnableWindow() method, but
      * makes sure that a control that has the focus is not disabled
      * before the focus is passed on to the next control.
      */
-    bool            DialogEnableWindow(UINT nID, bool bEnable);
-    void            OnCompositionChanged();
-    void            ExtendFrameIntoClientArea(UINT leftControl, UINT topControl, UINT rightControl, UINT botomControl);
-    int             GetDlgItemTextLength(UINT nId);
-    std::unique_ptr<TCHAR[]> GetDlgItemText(UINT nId);
+    bool                       DialogEnableWindow(UINT nID, bool bEnable);
+    void                       OnCompositionChanged();
+    void                       ExtendFrameIntoClientArea(UINT leftControl, UINT topControl, UINT rightControl, UINT botomControl);
+    int                        GetDlgItemTextLength(UINT nId);
+    std::unique_ptr<wchar_t[]> GetDlgItemText(UINT nId);
 
     virtual LRESULT CALLBACK DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
-    virtual bool    PreTranslateMessage(MSG* pMsg);
+    virtual bool             PreTranslateMessage(MSG* pMsg);
 
     operator HWND() { return m_hwnd; }
     operator HWND() const { return m_hwnd; }
 
     HWND GetToolTipHWND() const { return m_hToolTips; }
-protected:
-    HINSTANCE       hResource;
-    HWND            m_hwnd;
-    CDwmApiImpl     m_Dwm;
-    MARGINS         m_margins;
 
-    void            InitDialog(HWND hwndDlg, UINT iconID, bool bPosition = true);
+protected:
+    HINSTANCE   hResource;
+    HWND        m_hwnd;
+    CDwmApiImpl m_Dwm;
+    MARGINS     m_margins;
+
+    void InitDialog(HWND hwndDlg, UINT iconID, bool bPosition = true);
     /**
     * Adjusts the size of a checkbox or radio button control.
     * Since we always make the size of those bigger than 'necessary'
@@ -97,13 +100,14 @@ protected:
     static INT_PTR CALLBACK stDlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     // returns a pointer the dialog (stored as the WindowLong)
-    inline static CDialog * GetObjectFromWindow(HWND hWnd)
+    inline static CDialog* GetObjectFromWindow(HWND hWnd)
     {
-        return (CDialog *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        return (CDialog*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
     }
+
 private:
-    bool        m_bPseudoModal;
-    bool        m_bPseudoEnded;
-    INT_PTR     m_iPseudoRet;
-    HWND        m_hToolTips;
+    bool    m_bPseudoModal;
+    bool    m_bPseudoEnded;
+    INT_PTR m_iPseudoRet;
+    HWND    m_hToolTips;
 };

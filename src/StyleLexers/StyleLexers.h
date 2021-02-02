@@ -5,12 +5,9 @@
 
 #include <assert.h>
 
-#include "Scintilla.h"
-#include "SciLexer.h"
-#include "../sciXlexers/SciXLexer.h"
-
 #include "resource.h"
-
+#include "Scintilla.h"
+#include "lexers_x/SciXLexer.h"
 #include "EditLexer.h"
 
 // ----------------------------------------------------------------------------
@@ -50,7 +47,10 @@
 // ----------------------------------------------------------------------------
 
 // clamp
-inline int clampi(int x, int lower, int upper) { return (x < lower) ? lower : ((x > upper) ? upper : x); }
+inline int clampi(int x, int lower, int upper)
+{
+    return (x < lower) ? lower : ((x > upper) ? upper : x);
+}
 
 // ----------------------------------------------------------------------------
 

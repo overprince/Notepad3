@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Old Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Chcete normalizovať všetky zakončenia riadkov, ktoré majú byť '%s'?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + kliknutím otvoríte prepojenie."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Zachovanie pôvodnej časovej pečiatky pri úprave súboru je povolené.\nTáto možnosť zostane len pre túto reláciu!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Dochádzajú označené výskyty (záložka/zvýraznenie)!"
 END
 
 STRINGTABLE
@@ -240,7 +243,7 @@ BEGIN
     IDS_MUI_TITLE_FIXARB    " Štýl '%s' (%s)"
     IDS_MUI_ASSOCIATED_EXT  "Priradené prípony súborov:"
     IDS_MUI_EXAMPLE_TEXT    "Rýchla hnedá líška preskočí lenivého psa, 0123456789."
-    IDS_MUI_ZERO_LEN_MATCH  "^ Zero-Length Match"
+    IDS_MUI_ZERO_LEN_MATCH  "^ Zhoda s nulovou dĺžkou"
     IDS_MUI_GOTO_LINE       "Riadok (1 - %ti):"
     IDS_MUI_GOTO_COLUMN     "Stĺpec (1 - %ti):"
 END
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "&Jazyk prostredia"
     IDS_MUI_MENU_THEMES     "&Výber motívu"
-    IDM_THEMES_DEFAULT      "Predvolené nastavenia"
-    IDM_THEMES_FILE_ITEM    "Štandardné nastavenia"
+    IDM_THEMES_DEFAULT      "&Predvolené nastavenia"
+    IDM_THEMES_FILE_ITEM    "&Štandardné"
     IDS_MUI_STATUSBAR_PREFIXES "Riadok  ,Stĺpec  ,Výber  ,Sb  ,SLn  ,Occ  ,,,,,,,Znaky  ,Repl  ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Vymazať všetko"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Vymazať históriu vyhľadávania"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Vymazať históriu nahradenia"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

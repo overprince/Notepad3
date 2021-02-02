@@ -8,7 +8,7 @@
 *   Global definitions and declarations                                       *
 *   Based on code from Notepad2, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -19,7 +19,7 @@
 
 #include "TypeDefs.h"
 #include "SciCall.h"
-#include "../uthash/utarray.h"
+#include "uthash/utarray.h"
 
 //==== Main Window ============================================================
 
@@ -28,38 +28,36 @@
 //==== Data Type for WM_COPYDATA ==============================================
 #define DATA_NOTEPAD3_PARAMS 0xFB10
 typedef struct np3params {
-
-  int                 flagFileSpecified;
-  FILE_WATCHING_MODE  flagChangeNotify;
-  int                 flagLexerSpecified;
-  int                 iInitialLexer;
-  int                 flagQuietCreate;
-  int                 flagJumpTo;
-  int                 iInitialLine;
-  int                 iInitialColumn;
-  cpi_enc_t           flagSetEncoding;
-  int                 flagSetEOLMode;
-  int                 flagTitleExcerpt;
-  int                 flagMatchText;
-  WCHAR               wchData;
+    int                 flagFileSpecified;
+    FILE_WATCHING_MODE  flagChangeNotify;
+    int                 flagLexerSpecified;
+    int                 iInitialLexer;
+    int                 flagQuietCreate;
+    int                 flagJumpTo;
+    int                 iInitialLine;
+    int                 iInitialColumn;
+    cpi_enc_t           flagSetEncoding;
+    int                 flagSetEOLMode;
+    int                 flagTitleExcerpt;
+    int                 flagMatchText;
+    WCHAR               wchData;
 }
 np3params, *LPnp3params;
 
 
 #pragma pack(push, 1)
-typedef struct _undoSel
-{
-  int selMode_undo;
-  UT_array* anchorPos_undo;
-  UT_array* curPos_undo;
-  UT_array* anchorVS_undo;
-  UT_array* curVS_undo;
+typedef struct _undoSel {
+    int selMode_undo;
+    UT_array* anchorPos_undo;
+    UT_array* curPos_undo;
+    UT_array* anchorVS_undo;
+    UT_array* curVS_undo;
 
-  int selMode_redo;
-  UT_array* anchorPos_redo;
-  UT_array* curPos_redo;
-  UT_array* anchorVS_redo;
-  UT_array* curVS_redo;
+    int selMode_redo;
+    UT_array* anchorPos_redo;
+    UT_array* curPos_redo;
+    UT_array* anchorVS_redo;
+    UT_array* curVS_redo;
 }
 UndoRedoSelection_t;
 #pragma pack(pop)
@@ -70,20 +68,10 @@ UndoRedoSelection_t;
 #define NP3_SEL_MULTI  (SC_SEL_RECTANGLE + SC_SEL_LINES + SC_SEL_THIN)
 
 typedef enum {
-  UNDO = true,
-  REDO = false
+    UNDO = true,
+    REDO = false
+
 } DoAction;
-
-
-//==== Toolbar Style ==========================================================
-#define NP3_WS_TOOLBAR (WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | \
-                        TBSTYLE_TOOLTIPS | TBSTYLE_FLAT | TBSTYLE_ALTDRAG | TBSTYLE_LIST | \
-                        CCS_NODIVIDER | CCS_NOPARENTALIGN | CCS_ADJUSTABLE)
-
-
-//==== ReBar Style ============================================================
-#define NP3_WS_REBAR (WS_CHILD | WS_CLIPCHILDREN | WS_BORDER | RBS_VARHEIGHT | \
-                      RBS_BANDBORDERS | CCS_NODIVIDER | CCS_NOPARENTALIGN)
 
 
 //==== Ids ====================================================================
@@ -94,6 +82,7 @@ typedef enum {
 #define IDC_EDITFRAME    (0xFB04)
 #define IDC_FILENAME     (0xFB05)
 #define IDC_REUSELOCK    (0xFB06)
+#define IDC_MARGIN       (0xFB07)
 
 
 
@@ -112,8 +101,9 @@ typedef enum {
 
 
 //==== Function Declarations ==================================================
-bool InitApplication(HINSTANCE hInstance);
-HWND InitInstance(HINSTANCE hInstance, LPCWSTR pszCmdLine, int nCmdShow);
+bool InitApplication(const HINSTANCE hInstance);
+//~bool InitToolbarWndClass(const HINSTANCE hInstance);
+HWND InitInstance(const HINSTANCE hInstance, LPCWSTR pszCmdLine, int nCmdShow);
 WININFO GetFactoryDefaultWndPos(const int flagsPos);
 WININFO GetWinInfoByFlag(const int flagsPos);
 bool ActivatePrevInst();
@@ -123,15 +113,15 @@ bool DoElevatedRelaunch(EditFileIOStatus* pFioStatus, bool bAutoSaveOnRelaunch);
 void SnapToWinInfoPos(HWND hwnd, const WININFO winInfo, SCREEN_MODE mode);
 void ShowNotifyIcon(HWND hwnd, bool bAdd);
 void SetNotifyIconTitle(HWND hwnd);
-void InstallFileWatching(LPCWSTR lpszFile);
-bool GetDocModified();
+void InstallFileWatching(const bool bInstall);
+//bool GetDocModified();
 void SetSavePoint();
 void CALLBACK WatchTimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 void CALLBACK PasteBoardTimer(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 
 void ParseCommandLine();
 void ShowZoomCallTip();
-void CancelCallTip();
+void ShowWrapAroundCallTip(bool forwardSearch);
 
 void MarkAllOccurrences(int delay, bool bForceClear);
 void UpdateUI();
@@ -140,6 +130,7 @@ void UpdateStatusbar(bool);
 void UpdateMarginWidth();
 void UpdateSaveSettingsCmds();
 void UpdateMouseDWellTime();
+void UpdateTitleBar(const HWND hwnd);
 
 void UndoRedoRecordingStart();
 void UndoRedoRecordingStop();
@@ -177,8 +168,6 @@ bool OpenFileDlg(HWND hwnd,LPWSTR lpstrFile,int cchFile,LPCWSTR lpstrInitialDir)
 bool SaveFileDlg(HWND hwnd,LPWSTR lpstrFile,int cchFile,LPCWSTR lpstrInitialDir);
 
 void CreateBars(HWND hwnd, HINSTANCE hInstance);
-void CloseNonModalDialogs();
-void CloseApplication();
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam);
 LRESULT MsgCreate(HWND hwnd, WPARAM wParam, LPARAM lParam);
@@ -186,6 +175,7 @@ LRESULT MsgEndSession(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam);
 LRESULT MsgThemeChanged(HWND hwnd, WPARAM wParam, LPARAM lParam);
 LRESULT MsgDPIChanged(HWND hwnd, WPARAM wParam, LPARAM lParam);
 LRESULT MsgSize(HWND hwnd, WPARAM wParam, LPARAM lParam);
+LRESULT MsgDrawItem(HWND hwnd, WPARAM wParam, LPARAM lParam);
 LRESULT MsgDropFiles(HWND hwnd, WPARAM wParam, LPARAM lParam);
 LRESULT MsgCopyData(HWND hwnd, WPARAM wParam, LPARAM lParam);
 LRESULT MsgContextMenu(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam);

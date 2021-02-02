@@ -1,6 +1,6 @@
-// sktoolslib - common files for SK tools
+﻿// sktoolslib - common files for SK tools
 
-// Copyright (C) 2012 - Stefan Kueng
+// Copyright (C) 2012, 2020 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,10 +22,14 @@
 class CClipboardHelper
 {
 public:
-    CClipboardHelper() : bClipBoardOpen(false) {}
+    CClipboardHelper()
+        : bClipBoardOpen(false)
+    {
+    }
     ~CClipboardHelper();
-    bool Open(HWND hOwningWnd);
+    bool           Open(HWND hOwningWnd, bool retry = true);
     static HGLOBAL GlobalAlloc(SIZE_T dwBytes);
+
 private:
     bool bClipBoardOpen;
 };
@@ -36,10 +40,26 @@ inline CClipboardHelper::~CClipboardHelper()
         CloseClipboard();
 }
 
-inline bool CClipboardHelper::Open(HWND hOwningWnd)
+inline bool CClipboardHelper::Open(HWND hOwningWnd, bool retry)
 {
-    bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
-    return bClipBoardOpen;
+    // OpenClipboard may fail if another application has opened the clipboard.
+    // Try up to 8 times, with an initial delay of 1 ms and an exponential back off
+    // for a maximum total delay of 127 ms (1+2+4+8+16+32+64).
+    const int tries = retry ? 8 : 1;
+    for (int attempt = 0; attempt < tries; ++attempt)
+    {
+        if (attempt > 0)
+        {
+            ::Sleep(1 << (attempt - 1));
+        }
+        bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
+
+        if (bClipBoardOpen)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 inline HGLOBAL CClipboardHelper::GlobalAlloc(SIZE_T dwBytes)

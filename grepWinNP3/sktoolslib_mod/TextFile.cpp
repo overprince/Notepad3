@@ -47,7 +47,7 @@ CTextFile::~CTextFile(void)
     pFileBuf = nullptr;
 }
 
-bool CTextFile::Save(LPCTSTR path)
+bool CTextFile::Save(LPCWSTR path)
 {
     if (pFileBuf == nullptr)
         return false;
@@ -58,14 +58,16 @@ bool CTextFile::Save(LPCTSTR path)
     DWORD byteswritten;
     if (!WriteFile(hFile, pFileBuf.get(), filelen, &byteswritten, NULL))
     {
+        FlushFileBuffers(hFile);
         CloseHandle(hFile);
         return false;
     }
+    FlushFileBuffers(hFile);
     CloseHandle(hFile);
     return true;
 }
 
-bool CTextFile::Load(LPCTSTR path, UnicodeType &type, bool bUTF8, volatile LONG* bCancelled)
+bool CTextFile::Load(LPCWSTR path, UnicodeType &type, bool bUTF8, volatile LONG *bCancelled)
 {
     encoding = AUTOTYPE;
     type     = AUTOTYPE;
@@ -75,17 +77,17 @@ bool CTextFile::Load(LPCTSTR path, UnicodeType &type, bool bUTF8, volatile LONG*
     HANDLE hFile        = INVALID_HANDLE_VALUE;
     int    retrycounter = 0;
 
-    if ((_tcslen(path) > 2) && (path[0] == '\\') && (path[1] == '\\'))
+    if ((wcslen(path) > 2) && (path[0] == '\\') && (path[1] == '\\'))
     {
         // UNC path
-        _tcscpy_s(pathbuf.get(), MAX_PATH_NEW, L"\\\\?\\UNC");
-        _tcscat_s(pathbuf.get(), MAX_PATH_NEW, &path[1]);
+        wcscpy_s(pathbuf.get(), MAX_PATH_NEW, L"\\\\?\\UNC");
+        wcscat_s(pathbuf.get(), MAX_PATH_NEW, &path[1]);
     }
     else
     {
         // 'normal' path
-        _tcscpy_s(pathbuf.get(), MAX_PATH_NEW, L"\\\\?\\");
-        _tcscat_s(pathbuf.get(), MAX_PATH_NEW, path);
+        wcscpy_s(pathbuf.get(), MAX_PATH_NEW, L"\\\\?\\");
+        wcscat_s(pathbuf.get(), MAX_PATH_NEW, path);
     }
 
     do
@@ -214,28 +216,28 @@ bool CTextFile::Load(LPCTSTR path, UnicodeType &type, bool bUTF8, volatile LONG*
     else if (encoding == UNICODE_BE)
     {
         // make in place WORD BYTEs swap
-        UINT64* p_qw = (UINT64*)pFileBuf.get();
-        int nQwords = bytesread / 8;
+        UINT64 *p_qw    = (UINT64 *)pFileBuf.get();
+        int     nQwords = bytesread / 8;
         for (int nQword = 0; nQword < nQwords; nQword++)
             p_qw[nQword] = WordSwapBytes(p_qw[nQword]);
 
-        wchar_t* p_w = (wchar_t*)p_qw;
-        int nWords = bytesread / 2;
+        wchar_t *p_w    = (wchar_t *)p_qw;
+        int      nWords = bytesread / 2;
         for (int nWord = nQwords * 4; nWord < nWords; nWord++)
             p_w[nWord] = WideCharSwap(p_w[nWord]);
 
         try
         {
-            if ((bytesread > 1) && (*(unsigned char*)pFileBuf.get() == 0xFF))
+            if ((bytesread > 1) && (*(unsigned char *)pFileBuf.get() == 0xFF))
             {
                 // remove the BOM
-                textcontent.assign(((wchar_t*)pFileBuf.get() + 1), (bytesread / sizeof(wchar_t)) - 1);
+                textcontent.assign(((wchar_t *)pFileBuf.get() + 1), (bytesread / sizeof(wchar_t)) - 1);
                 hasBOM = true;
             }
             else
-                textcontent.assign((wchar_t*)pFileBuf.get(), bytesread / sizeof(wchar_t));
+                textcontent.assign((wchar_t *)pFileBuf.get(), bytesread / sizeof(wchar_t));
         }
-        catch (const std::exception&)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -336,13 +338,13 @@ void CTextFile::SetFileContent(const std::wstring &content)
                 }
             }
             // make in place WORD BYTEs swap
-            UINT64* p_qw = (UINT64*)pFileBuf.get();
-            int nQwords = filelen / 8;
+            UINT64 *p_qw    = (UINT64 *)pFileBuf.get();
+            int     nQwords = filelen / 8;
             for (int nQword = 0; nQword < nQwords; nQword++)
                 p_qw[nQword] = WordSwapBytes(p_qw[nQword]);
 
-            wchar_t* p_w = (wchar_t*)p_qw;
-            int nWords = filelen / 2;
+            wchar_t *p_w    = (wchar_t *)p_qw;
+            int      nWords = filelen / 2;
             for (int nWord = nQwords * 4; nWord < nWords; nWord++)
                 p_w[nWord] = WideCharSwap(p_w[nWord]);
         }
@@ -503,7 +505,7 @@ CTextFile::UnicodeType CTextFile::CheckUnicodeType(BYTE *pBuffer, int cb)
     return ANSI;
 }
 
-bool CTextFile::CalculateLines(volatile LONG * bCancelled)
+bool CTextFile::CalculateLines(volatile LONG *bCancelled)
 {
     // fill an array with starting positions for every line in the loaded file
     if (pFileBuf == NULL)
@@ -548,7 +550,7 @@ bool CTextFile::CalculateLines(volatile LONG * bCancelled)
 
 long CTextFile::LineFromPosition(long pos) const
 {
-    auto lb     = std::lower_bound(linepositions.begin(), linepositions.end(), static_cast<size_t>(pos));
+    auto lb     = std::lower_bound(linepositions.begin(), linepositions.end(), (size_t)pos);
     auto lbLine = lb - linepositions.begin();
     return long(lbLine + 1);
 }

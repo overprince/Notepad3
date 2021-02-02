@@ -26,22 +26,10 @@ Thumbs.db
 *.VC.db*
 
 /.vs
-/minipath/.vs
 /Bin
-/build.user.bat
-/Build/.vs
 /Build/Packages
-/Build/temp_zip*
-/Build/Bin/Password.txt
-/Build/Bin/Certum.cer
-/Build/Bin/Certum.p12
-/Build/sign.bat
-/Build/Signing/Certum.cer
-/Build/Signing/Certum.p12
-/Build/Signing/kSign.exe
-/Build/Signing/kSignCMD.exe
-/Build/Signing/Password.txt
-/distrib/Notepad3*.exe
+/Build/make_portable_*
+/Build/notepad3*setup_*
 
 /packages
 /other_sln/packages
@@ -68,11 +56,9 @@ Thumbs.db
 /np3portableapp/Notepad3Portable/Notepad3Portable.exe
 /np3portableapp/Notepad3Portable/App/AppInfo/appinfo.ini
 /np3portableapp/Notepad3Portable/App/DefaultData/settings
-/np3portableapp/Notepad3Portable/App/Notepad3/Docs/*.txt
+/np3portableapp/Notepad3Portable/App/Notepad3/Docs
 /np3portableapp/Notepad3Portable/App/Notepad3/x64/*.exe
 /np3portableapp/Notepad3Portable/App/Notepad3/x64/lng
-/np3portableapp/Notepad3Portable/App/Notepad3/x64/grepWin/*.*
 /np3portableapp/Notepad3Portable/App/Notepad3/x86/*.exe
 /np3portableapp/Notepad3Portable/App/Notepad3/x86/lng
-/np3portableapp/Notepad3Portable/App/Notepad3/x86/grepWin/*.*
 

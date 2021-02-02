@@ -59,7 +59,7 @@ ViewStyle::ViewStyle() : markers(MARKER_MAX + 1), indicators(INDICATOR_MAX + 1) 
 
 // Copy constructor only called when printing copies the screen ViewStyle so it can be
 // modified for printing styles.
-ViewStyle::ViewStyle(const ViewStyle &source) : markers(MARKER_MAX + 1), indicators(INDICATOR_MAX + 1), fonts() {
+ViewStyle::ViewStyle(const ViewStyle &source) : markers(MARKER_MAX + 1), indicators(INDICATOR_MAX + 1) {
 	Init(source.styles.size());
 	styles = source.styles;
 	for (size_t sty=0; sty<source.styles.size(); sty++) {
@@ -519,6 +519,17 @@ ColourDesired ViewStyle::WrapColour() const noexcept {
 		return styles[STYLE_DEFAULT].fore;
 }
 
+// Insert new edge in sorted order.
+void ViewStyle::AddMultiEdge(uptr_t wParam, sptr_t lParam) {
+	const int column = static_cast<int>(wParam);
+	theMultiEdge.insert(
+		std::upper_bound(theMultiEdge.begin(), theMultiEdge.end(), column,
+			[](const EdgeProperties &a, const EdgeProperties &b) {
+				return a.column < b.column;
+			}),
+		EdgeProperties(column, lParam));
+}
+
 bool ViewStyle::SetWrapState(int wrapState_) noexcept {
 	WrapMode wrapStateWanted;
 	switch (wrapState_) {
@@ -666,10 +677,10 @@ FontRealised *ViewStyle::Find(const FontSpecification &fs) {
 }
 
 void ViewStyle::FindMaxAscentDescent() {
-	for (FontMap::const_iterator it = fonts.cbegin(); it != fonts.cend(); ++it) {
-		if (maxAscent < it->second->ascent)
-			maxAscent = it->second->ascent;
-		if (maxDescent < it->second->descent)
-			maxDescent = it->second->descent;
+	for (const auto & font : fonts) {
+		if (maxAscent < font.second->ascent)
+			maxAscent = font.second->ascent;
+		if (maxDescent < font.second->descent)
+			maxDescent = font.second->descent;
 	}
 }

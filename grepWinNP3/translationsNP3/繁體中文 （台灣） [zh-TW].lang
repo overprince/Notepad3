@@ -9,7 +9,7 @@
 #
 # encoding: UTF-8
 # Language: Chinese Traditional (Taiwan) resources
-# Translator: (zh-TW) 繁體中文翻譯 by it4u
+# Translator: (zh-TW) 繁體中文翻譯 by kenneth-ran
 #
 
 #, fuzzy
@@ -61,16 +61,24 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr ""
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr ""
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
 msgstr ""
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
+msgid "Add to Presets..."
 msgstr ""
 
 #. Resource IDs: (155)
@@ -324,11 +332,11 @@ msgid "Preset name"
 msgstr ""
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
+msgid "Presets..."
 msgstr ""
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
+msgid "Press F1 for help..."
 msgstr ""
 
 #. Resource IDs: (154)
@@ -421,7 +429,7 @@ msgid "Select path to search"
 msgstr ""
 
 #. Resource IDs: (1071)
-msgid "Settings"
+msgid "Settings..."
 msgstr ""
 
 #. Resource IDs: (133)
@@ -433,7 +441,7 @@ msgid "Size is"
 msgstr ""
 
 #. Resource IDs: (1028)
-msgid "Test regex"
+msgid "Test regex..."
 msgstr ""
 
 #. Resource IDs: (136)
@@ -462,10 +470,6 @@ msgstr ""
 
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
-msgstr ""
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
 msgstr ""
 
 #. Resource IDs: (116)
@@ -574,6 +578,10 @@ msgstr ""
 msgid "search string is empty"
 msgstr ""
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr ""
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr ""
@@ -581,6 +589,10 @@ msgstr ""
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr ""
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -596,5 +608,9 @@ msgstr ""
 
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
+msgstr ""
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
 msgstr ""
 

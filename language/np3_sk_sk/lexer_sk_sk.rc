@@ -125,6 +125,8 @@ BEGIN
     IDS_LEX_AHKL            "AutoHotkey_L Script"
     IDS_LEX_TEXT_FILES      "Text Files"
     IDS_LEX_TOML_CFG        "TOML"
+    IDS_LEX_DART_SRC        "Dart Source Code"
+    IDS_LEX_KOTLIN_SRC      "Kotlin Source Code"
 END
 
 STRINGTABLE
@@ -466,20 +468,23 @@ BEGIN
     IDS_LEX_STR_63366       "ESC Sequence"
     IDS_LEX_STR_63367       "Unicode-Point Hover"
     IDS_LEX_STR_63368       "2nd Unicode-Point Hover"
+    IDS_LEX_STR_63369       "Interface"
+    IDS_LEX_STR_63370       "Annotation"
+    IDS_LEX_STR_63371       "Comment Doc Word"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_LEX_CSV_COL_0       "Column 0"
-    IDS_LEX_CSV_COL_1       "Column 1"
-    IDS_LEX_CSV_COL_2       "Column 2"
-    IDS_LEX_CSV_COL_3       "Column 3"
-    IDS_LEX_CSV_COL_4       "Column 4"
-    IDS_LEX_CSV_COL_5       "Column 5"
-    IDS_LEX_CSV_COL_6       "Column 6"
-    IDS_LEX_CSV_COL_7       "Column 7"
-    IDS_LEX_CSV_COL_8       "Column 8"
-    IDS_LEX_CSV_COL_9       "Column 9"
+    IDS_LEX_CSV_COL_0       "Stĺpec 0"
+    IDS_LEX_CSV_COL_1       "Stĺpec 1"
+    IDS_LEX_CSV_COL_2       "Stĺpec 2"
+    IDS_LEX_CSV_COL_3       "Stĺpec 3"
+    IDS_LEX_CSV_COL_4       "Stĺpec 4"
+    IDS_LEX_CSV_COL_5       "Stĺpec 5"
+    IDS_LEX_CSV_COL_6       "Stĺpec 6"
+    IDS_LEX_CSV_COL_7       "Stĺpec 7"
+    IDS_LEX_CSV_COL_8       "Stĺpec 8"
+    IDS_LEX_CSV_COL_9       "Stĺpec 9"
 END
 
 #endif    // Slovak (Slovakia) resources

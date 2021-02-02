@@ -8,7 +8,7 @@
 *   Scintilla Style Management                                                *
 *   Based on code from Notepad2, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -27,20 +27,23 @@
 #define MARGIN_SCI_FOLDING 2
 
 // Number of Lexers in pLexArray
-#define NUMLEXERS 51
+#define NUMLEXERS 53
 #define AVG_NUM_OF_STYLES_PER_LEXER 20
 
 void   Style_Load();
 bool   Style_Import(HWND hwnd);
+bool   Style_ImportTheme(const unsigned iThemeIdx);
+void   Style_LoadLexerFileExtensions();
 bool   Style_ImportFromFile(const WCHAR* szFile);
 void   Style_SaveSettings(bool bForceSaveSettings);
 bool   Style_Export(HWND hwnd);
-void   Style_ToIniSection(bool bForceAll, bool bIsStdIniFile);
+void   Style_FileExtToIniSection(bool bForceAll);
+void   Style_ToIniSection(bool bForceAll);
 bool   Style_ExportToFile(const WCHAR* szFile, bool bForceAll);
 
 unsigned ThemeItems_CountOf();
-bool     Style_InsertThemesMenu(HMENU hMenuBar);
-void     Style_DynamicThemesMenuCmd(int cmd);
+bool   Style_InsertThemesMenu(HMENU hMenuBar);
+void   Style_DynamicThemesMenuCmd(int cmd, unsigned iCurThemeIdx);
 
 float  Style_GetCurrentFontSize();
 void   Style_SetFoldingAvailability(PEDITLEXER pLexer);
@@ -51,9 +54,9 @@ void   Style_SetUrlHotSpot(HWND hwnd);
 void   Style_SetInvisible(HWND hwnd, bool);
 void   Style_SetReadonly(HWND hwnd, bool);
 void   Style_HighlightCurrentLine(HWND hwnd, int);
-void   Style_SetFolding(HWND hwnd, bool);
-void   Style_SetBookmark(HWND hwnd, bool);
-void   Style_SetMargin(HWND hwnd, int iStyle, LPCWSTR lpszStyle);
+void   Style_SetFolding(HWND hwnd, bool bShowMargin);
+void   Style_SetBookmark(HWND hwnd, bool bShowMargin);
+void   Style_SetMargin(HWND hwnd, LPCWSTR lpszStyle);
 bool   Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile);
 bool   Style_MaybeBinaryFile(HWND hwnd, LPCWSTR lpszFile);
 void   Style_SetLexerFromName(HWND hwnd,LPCWSTR lpszFile,LPCWSTR lpszName);
@@ -68,7 +71,7 @@ bool   Style_GetUse2ndDefault();
 void   Style_SetUse2ndDefault(bool);
 void   Style_SetIndentGuides(HWND hwnd,bool);
 void   Style_SetExtraLineSpace(HWND hwnd, LPWSTR lpszStyle, int cch);
-bool   Style_GetOpenDlgFilterStr(LPWSTR lpszFilter,int cchFilter);
+bool   Style_GetFileFilterStr(LPWSTR lpszFilter, int cchFilter, LPWSTR lpszDefExt, int cchExt, bool bSaveAs);
 bool   Style_StrGetFontName(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont);
 bool   Style_StrGetFontStyle(LPCWSTR lpszStyle,LPWSTR lpszFontStyle,int cchFontStyle);
 bool   Style_StrGetFontQuality(LPCWSTR lpszStyle,LPWSTR lpszQuality,int cchQuality);
@@ -76,7 +79,7 @@ bool   Style_StrGetCharSet(LPCWSTR lpszStyle,int* i);
 bool   Style_StrGetSizeInt(LPCWSTR lpszStyle, int* i);
 bool   Style_StrGetSize(LPCWSTR lpszStyle,float* f);
 bool   Style_StrGetSizeStr(LPCWSTR lpszStyle,LPWSTR lpszSize,int cchSize);
-bool   Style_StrGetColor(LPCWSTR lpszStyle, COLOR_LAYER layer, COLORREF* rgb);
+bool   Style_StrGetColor(LPCWSTR lpszStyle, COLOR_LAYER layer, COLORREF *rgb, bool useDefault);
 bool   Style_StrGetCase(LPCWSTR lpszStyle,int* i);
 bool   Style_StrGetAlpha(LPCWSTR lpszStyle, int* iOutValue, bool bAlpha1st);
 bool   Style_GetIndicatorType(LPWSTR lpszStyle,int cchSize,int* idx);
@@ -100,6 +103,16 @@ INT_PTR CALLBACK Style_SelectLexerDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPAR
 void   Style_SelectLexerDlg(HWND hwnd);
 bool   Style_StrGetWeightValue(LPCWSTR lpszWeight,int* weight);
 void   Style_AppendWeightStr(LPWSTR lpszWeight, int cchSize, int fontWeight);
+
+
+inline void Style_PrintfCchColor(LPWSTR buffer, const size_t cch, LPCWSTR prefix, COLOR_LAYER layer, COLORREF color)
+{
+    if (layer == FOREGROUND_LAYER) {
+        StringCchPrintf(buffer, cch, L"%sfore:#%02X%02X%02X", prefix, GetRValue(color), GetGValue(color), GetBValue(color));
+    } else {
+        StringCchPrintf(buffer, cch, L"%sback:#%02X%02X%02X", prefix, GetRValue(color), GetGValue(color), GetBValue(color));
+    }
+}
 
 #if 0
 bool   Style_StrGetStretchValue(LPCWSTR lpszWeight, int* stretch);

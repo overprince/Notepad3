@@ -61,17 +61,25 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr "Visiter le site web Stefan Küng"
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr "<a>à propos de grepWinNP3...</a>"
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
 msgstr "À propos de grepWinNP3"
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
-msgstr "Ajout aux prédéfinis"
+msgid "Add to Presets..."
+msgstr "Ajouter aux prédéfinis..."
 
 #. Resource IDs: (155)
 msgid "All Files"
@@ -208,7 +216,7 @@ msgstr "Ext"
 
 #. Resource IDs: (1039)
 msgid "File Names match:\nuse '|' to separate multiple text match patterns, prepen&d '-' to exclude"
-msgstr "Fchiers correspondent:\nutiliser'|' pour séparer plusieurs motifs, préfixe '-' pour exclure"
+msgstr "Fichiers correspondent:\nutiliser'|' pour séparer plusieurs motifs, préfixe '-' pour exclure"
 
 #. Resource IDs: (1059)
 msgid "Files"
@@ -324,12 +332,12 @@ msgid "Preset name"
 msgstr "Nom du Prédéfini"
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
-msgstr "Prédéfinis"
+msgid "Presets..."
+msgstr "Prédéfinis..."
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
-msgstr "Appuyer sur F1 pour Aide"
+msgid "Press F1 for help..."
+msgstr "Appuyer sur F1 pour Aide..."
 
 #. Resource IDs: (154)
 msgid "Programs"
@@ -421,8 +429,8 @@ msgid "Select path to search"
 msgstr "Choisir le chemin où chercher"
 
 #. Resource IDs: (1071)
-msgid "Settings"
-msgstr "Paramètres"
+msgid "Settings..."
+msgstr "Paramètres..."
 
 #. Resource IDs: (133)
 msgid "Size"
@@ -433,8 +441,8 @@ msgid "Size is"
 msgstr "Taille est"
 
 #. Resource IDs: (1028)
-msgid "Test regex"
-msgstr "Tester Regex"
+msgid "Test regex..."
+msgstr "Tester Regex..."
 
 #. Resource IDs: (136)
 msgid "Text"
@@ -463,10 +471,6 @@ msgstr "Traiter fichiers comme UTF-8"
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
 msgstr "Traiter fichiers comme binaires"
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
-msgstr "Visiter le site web Stefan Küng"
 
 #. Resource IDs: (116)
 msgid "a regular expression used for searching. Press F1 for more info."
@@ -574,6 +578,10 @@ msgstr "Scanning du fichier '%s'"
 msgid "search string is empty"
 msgstr "Le motif de recherche est vide."
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr "Démarrer une nouvelle fenêtre grepWinNP3"
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr "Chemin(s) de recherche récursive.\n'|' pour ajouter un chemin.\nExemple: c:\\temp|d:\\logs"
@@ -581,6 +589,10 @@ msgstr "Chemin(s) de recherche récursive.\n'|' pour ajouter un chemin.\nExemple
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr "Il est possible d'exclure des dossiers. Exemple: ^(CVS|images)$ pour exclure CVS et images.\nLes dossiers '.svn' sont 'cachés' sous Windows et ne sont normalement pas parcourus."
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -597,4 +609,8 @@ msgstr "Max # de travailleurs concurrent"
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
 msgstr "Ceci ajoute au menu contextuel une entrée nommée 'Ouvrir dans l'éditeur'"
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
+msgstr "Rester au-dessus"
 

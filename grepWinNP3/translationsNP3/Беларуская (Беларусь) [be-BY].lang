@@ -43,7 +43,7 @@ msgstr "%path% замяняецца на шлях да файла, %line% на �
 
 #. Resource IDs: (119)
 msgid "&About grepWinNP3..."
-msgstr "&Аб grepWinNP3..."
+msgstr "&Пра grepWinNP3..."
 
 #. Resource IDs: (1049)
 msgid "&Replace"
@@ -61,17 +61,25 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr "Наведаць сайт Stefan Küng"
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr "<a>пра grepWinNP3...</a>"
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
-msgstr "Аб grepWinNP3"
+msgstr "Пра grepWinNP3"
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
-msgstr "Дадаць у прэсеты"
+msgid "Add to Presets..."
+msgstr "Дадаць у прэсеты..."
 
 #. Resource IDs: (155)
 msgid "All Files"
@@ -324,12 +332,12 @@ msgid "Preset name"
 msgstr "Імя прэсета"
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
-msgstr "Прэсеты"
+msgid "Presets..."
+msgstr "Прэсеты..."
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
-msgstr "F1 для даведкі"
+msgid "Press F1 for help..."
+msgstr "F1 для даведкі..."
 
 #. Resource IDs: (154)
 msgid "Programs"
@@ -421,8 +429,8 @@ msgid "Select path to search"
 msgstr "Выбар шляху пошуку"
 
 #. Resource IDs: (1071)
-msgid "Settings"
-msgstr "Налады"
+msgid "Settings..."
+msgstr "Налады..."
 
 #. Resource IDs: (133)
 msgid "Size"
@@ -433,8 +441,8 @@ msgid "Size is"
 msgstr "Памер"
 
 #. Resource IDs: (1028)
-msgid "Test regex"
-msgstr "Тэст regex"
+msgid "Test regex..."
+msgstr "Тэст regex..."
 
 #. Resource IDs: (136)
 msgid "Text"
@@ -463,10 +471,6 @@ msgstr "Файлы як UTF-8"
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
 msgstr "Файлы як бінарныя"
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
-msgstr "Наведаць сайт Stefan Küng"
 
 #. Resource IDs: (116)
 msgid "a regular expression used for searching. Press F1 for more info."
@@ -574,6 +578,10 @@ msgstr "Пошук файлаў '%s'"
 msgid "search string is empty"
 msgstr "Пошукавы радок пусты"
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr "Адкрыць новае акно grepWinNP3"
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr "Рэкурсіўны пошук шляхаў.\nАддзяляйце шляхі сімвалам |.\nПрыклад: c:\\temp|d:\\logs"
@@ -581,6 +589,10 @@ msgstr "Рэкурсіўны пошук шляхаў.\nАддзяляйце шл
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr "Можна выключыць папкі, напрыклад, CVS і images.\nПрыклад: ^(CVS|images)$\nЗаўважце, что папкі '.svn' утоеныя ў Windows, таму яны звычайна не скануюцца."
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -597,4 +609,8 @@ msgstr "Макс. паралельных воркераў"
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
 msgstr "Дадае пункт у кантэкстнае меню з назвай 'Адкрыць у рэдактары'"
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
+msgstr "Зверху іншых вокнаў"
 

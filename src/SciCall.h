@@ -6,13 +6,13 @@
 *                                                                             *
 * SciCall.h                                                                   *
 *   Inline wrappers for Scintilla API calls, arranged in the order and        *
-*	grouping in which they appear in the Scintilla documentation.             *
+*   grouping in which they appear in the Scintilla documentation.             *
 *   Based on code from Notepad2, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
 *   The use of these inline wrapper functions with declared types will        *
 *   ensure that we get the benefit of the compiler's type checking.           *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -20,31 +20,31 @@
 
 
 /******************************************************************************
-* 
-* On Windows, the message - passing scheme used to communicate between the 
-* container and Scintilla is mediated by the operating system SendMessage 
+*
+* On Windows, the message - passing scheme used to communicate between the
+* container and Scintilla is mediated by the operating system SendMessage
 * function and can lead to bad performance when calling intensively.
 * To avoid this overhead, Scintilla provides messages that allow you to call
 * the Scintilla message function directly.
 * The code to do this in C / C++ is of the form :
-* 
+*
 *   #include "Scintilla.h"
 *   SciFnDirect pSciMsg = (SciFnDirect)SendMessage(hSciWnd, SCI_GETDIRECTFUNCTION, 0, 0);
 *   sptr_t pSciWndData = (sptr_t)SendMessage(hSciWnd, SCI_GETDIRECTPOINTER, 0, 0);
-* 
+*
 *   // now a wrapper to call Scintilla directly
 *   sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 *     return pSciMsg(pSciWndData, iMessage, wParam, lParam);
 *   }
 *
-* SciFnDirect, sptr_t and uptr_t are declared in Scintilla.h.hSciWnd 
+* SciFnDirect, sptr_t and uptr_t are declared in Scintilla.h.hSciWnd
 * is the window handle returned when you created the Scintilla window.
-* 
-* While faster, this direct calling will cause problems if performed from a 
-* different thread to the native thread of the Scintilla window in which case 
-* SendMessage(hSciWnd, SCI_*, wParam, lParam) should be used 
+*
+* While faster, this direct calling will cause problems if performed from a
+* different thread to the native thread of the Scintilla window in which case
+* SendMessage(hSciWnd, SCI_*, wParam, lParam) should be used
 * to synchronize with the window's thread.
-* 
+*
 *******************************************************************************/
 
 #define SCI_DIRECTFUNCTION_INTERFACE 1  // disable for asynchronous operation
@@ -122,6 +122,11 @@ __forceinline LRESULT SciCall_##fn(type1 var1, type2 var2) {       \
 
 //=============================================================================
 
+// Initialize
+DeclareSciCallR0(GetLayoutCache, GETLAYOUTCACHE, int)
+DeclareSciCallV1(SetLayoutCache, SETLAYOUTCACHE, int, cache)
+DeclareSciCallR0(GetPositionCache, GETPOSITIONCACHE, int)
+DeclareSciCallV1(SetPositionCache, SETPOSITIONCACHE, int, cache)
 
 // Document Pointer Handling
 DeclareSciCallR0(GetDocPointer, GETDOCPOINTER, sptr_t)
@@ -228,6 +233,7 @@ DeclareSciCallV0(DelWordRight, DELWORDRIGHT)
 DeclareSciCallV0(DelLineLeft, DELLINELEFT)
 DeclareSciCallV0(DelLineRight, DELLINERIGHT)
 DeclareSciCallV0(LineDelete, LINEDELETE)
+DeclareSciCallV0(LineCut, LINECUT)
 DeclareSciCallV1(LinesSplit, LINESSPLIT, int, pix)
 DeclareSciCallV0(LinesJoin, LINESJOIN)
 DeclareSciCallV0(EditToggleOverType, EDITTOGGLEOVERTYPE)
@@ -238,12 +244,10 @@ DeclareSciCallV0(SelectionDuplicate, SELECTIONDUPLICATE)
 DeclareSciCallV0(LineTranspose, LINETRANSPOSE)
 DeclareSciCallV0(MoveSelectedLinesUp, MOVESELECTEDLINESUP)
 DeclareSciCallV0(MoveSelectedLinesDown, MOVESELECTEDLINESDOWN)
-DeclareSciCallR0(GetLexer, GETLEXER, int)
 DeclareSciCallR2(FindText, FINDTEXT, DocPos, int, flags, struct Sci_TextToFind*, text)
 
 // Operations
 DeclareSciCallV0(Cut, CUT)
-DeclareSciCallV0(LineCut, LINECUT)
 DeclareSciCallV0(Copy, COPY)
 DeclareSciCallV0(Paste, PASTE)
 DeclareSciCallV0(Clear, CLEAR)
@@ -321,8 +325,13 @@ DeclareSciCallR0(GetCharacterPointer, GETCHARACTERPOINTER, const char* const)
 DeclareSciCallR2(GetLine, GETLINE, DocPos, DocLn, line, const char*, text)
 DeclareSciCallR2(GetCurLine, GETCURLINE, DocPos, unsigned int, length, const char*, text)
 
-inline DocPos SciCall_GetLine_Safe(DocLn iLine, char* pTxtBuf) {
-  DocPos const iLen = SciCall_GetLine(iLine, pTxtBuf);  if (pTxtBuf) pTxtBuf[iLen] = '\0';  return iLen;
+inline DocPos SciCall_GetLine_Safe(DocLn iLine, char* pTxtBuf)
+{
+    DocPos const iLen = SciCall_GetLine(iLine, pTxtBuf);
+    if (pTxtBuf) {
+        pTxtBuf[iLen] = '\0';
+    }
+    return (iLen + 1);
 }
 
 
@@ -378,26 +387,54 @@ DeclareSciCallV1(SetFirstVisibleLine, SETFIRSTVISIBLELINE, DocLn, line)
 DeclareSciCallR1(VisibleFromDocLine, VISIBLEFROMDOCLINE, DocLn, DocLn, line)
 DeclareSciCallR1(DocLineFromVisible, DOCLINEFROMVISIBLE, DocLn, DocLn, line)
 
+DeclareSciCallV1(SetHScrollbar, SETHSCROLLBAR, bool, visible)
+DeclareSciCallV1(SetVScrollbar, SETVSCROLLBAR, bool, visible)
+
+
+//=============================================================================
+//
+//  Line State (parser internals)
+//
+//~DeclareSciCallV2(SetLineState, SETLINESTATE, DocLn, line, int, state)
+//~DeclareSciCallR1(GetLineState, GETLINESTATE, int, DocLn, line)
+//~DeclareSciCallR0(GetMaxLineState, GETMAXLINESTATE, DocLn)
+
+
 //=============================================================================
 //
 //  Style definition
 //
+DeclareSciCallR0(GetLexer, GETLEXER, int)
+DeclareSciCallV1(SetLexer, SETLEXER, int, lexerid) // deprecated
+DeclareSciCallV01(SetILexer, SETILEXER, void*, lexerPtr) // ILexer5*
+
+DeclareSciCallV1(SetIdleStyling, SETIDLESTYLING, int, idlestyle)
+
+DeclareSciCallV0(StyleClearAll, STYLECLEARALL);
 DeclareSciCallV0(ClearDocumentStyle, CLEARDOCUMENTSTYLE)
 DeclareSciCallV0(StyleResetDefault, STYLERESETDEFAULT)
 DeclareSciCallV2(StyleSetVisible, STYLESETVISIBLE, int, style, bool, visible)
-DeclareSciCallR1(StyleGetFore, STYLEGETFORE, COLORREF, char, style)
-DeclareSciCallR1(StyleGetBack, STYLEGETBACK, COLORREF, char, style)
-DeclareSciCallR1(GetStyleAt, GETSTYLEAT, char, DocPos, position)
+DeclareSciCallR1(StyleGetFore, STYLEGETFORE, COLORREF, int, style)
+DeclareSciCallV2(StyleSetFore, STYLESETFORE, int, style, COLORREF, rgb)
+DeclareSciCallR1(StyleGetBack, STYLEGETBACK, COLORREF, int, style)
+DeclareSciCallV2(StyleSetBack, STYLESETBACK, int, style, COLORREF, rgb)
+DeclareSciCallR1(GetStyleAt, GETSTYLEAT, int, DocPos, position)
 DeclareSciCallV2(SetStyling, SETSTYLING, DocPos, length, int, style)
 DeclareSciCallV1(StartStyling, STARTSTYLING, DocPos, position)
 DeclareSciCallR0(GetEndStyled, GETENDSTYLED, DocPos)
 
-DeclareSciCallR1(StyleGetHotspot, STYLEGETHOTSPOT, bool, int, iStyle)
-DeclareSciCallV2(StyleSetHotspot, STYLESETHOTSPOT, int, iStyle, bool, hotspot)
+DeclareSciCallR1(StyleGetHotspot, STYLEGETHOTSPOT, bool, int, style)
+DeclareSciCallV2(StyleSetHotspot, STYLESETHOTSPOT, int, style, bool, hotspot)
 DeclareSciCallV2(SetHotspotActiveFore, SETHOTSPOTACTIVEFORE, bool, useSetting, int, colour)
 DeclareSciCallV2(SetHotspotActiveBack, SETHOTSPOTACTIVEBACK, bool, useSetting, int, colour)
 DeclareSciCallV1(SetHotspotActiveUnderline, SETHOTSPOTACTIVEUNDERLINE, bool, underline)
 DeclareSciCallV1(SetHotspotSigleLine, SETHOTSPOTSINGLELINE, bool, singleline)
+
+DeclareSciCallV1(SetViewWS, SETVIEWWS, int, wspc)
+DeclareSciCallV1(SetViewEOL, SETVIEWEOL, bool, eols)
+
+DeclareSciCallV2(StyleSetFont, STYLESETFONT, int, style, const char *, fontname)
+
 
 //=============================================================================
 //
@@ -472,18 +509,12 @@ DeclareSciCallV2(MarkerSetFore, MARKERSETFORE, int, markerNumber, COLORREF, colo
 DeclareSciCallV2(MarkerSetBack, MARKERSETBACK, int, markerNumber, COLORREF, colour)
 DeclareSciCallV2(MarkerSetAlpha, MARKERSETALPHA, int, markerNumber, int, alpha)
 DeclareSciCallR2(MarkerAdd, MARKERADD, int, DocLn, line, int, markerNumber)
+DeclareSciCallV2(MarkerAddSet, MARKERADDSET, DocLn, line, int, markerMask)
 DeclareSciCallV2(MarkerDelete, MARKERDELETE, DocLn, line, int, markerNumber)
 DeclareSciCallV1(MarkerDeleteAll, MARKERDELETEALL, int, markerNumber)
 DeclareSciCallV2(MarkerSetBackSelected, MARKERSETBACKSELECTED, int, markerNumber, int, colour)
-
-//=============================================================================
-//
-//  Line State
-//
-DeclareSciCallV2(SetLineState, SETLINESTATE, DocLn, line, int, state)
-DeclareSciCallR1(GetLineState, GETLINESTATE, int, DocLn, line)
-DeclareSciCallR0(GetMaxLineState, GETMAXLINESTATE, DocLn)
-DeclareSciCallV1(SetIdleStyling, SETIDLESTYLING, int, idlestyle)
+DeclareSciCallR2(MarkerNext, MARKERNEXT, DocLn, DocLn, start, int, markerMask)
+DeclareSciCallR2(MarkerPrevious, MARKERPREVIOUS, DocLn, DocLn, start, int, markerMask)
 
 //=============================================================================
 //
@@ -556,8 +587,11 @@ DeclareSciCallV1(SetUndoCollection, SETUNDOCOLLECTION, bool, bCollectUndo)
 //  SetTechnology
 //
 DeclareSciCallV1(SetBufferedDraw, SETBUFFEREDDRAW, bool, value)
+DeclareSciCallR0(GetTechnology, GETTECHNOLOGY, int)
 DeclareSciCallV1(SetTechnology, SETTECHNOLOGY, int, technology)
+DeclareSciCallR0(GetBidirectional, GETBIDIRECTIONAL, int)
 DeclareSciCallV1(SetBidirectional, SETBIDIRECTIONAL, int, direction)
+
 DeclareSciCallV1(SetCharacterCategoryOptimization, SETCHARACTERCATEGORYOPTIMIZATION, int, count)
 
 //=============================================================================
@@ -579,6 +613,7 @@ DeclareSciCallR0(IsSelectionRectangle, SELECTIONISRECTANGLE, bool)
 #define Sci_IsDocEmpty() (SciCall_GetTextLength() <= 0LL)
 
 #define Sci_IsThinSelection() (SciCall_GetSelectionMode() == SC_SEL_THIN)
+#define Sci_IsStreamSelection() (SciCall_GetSelectionMode() == SC_SEL_STREAM)
 #define Sci_IsMultiSelection() ((SciCall_GetSelections() > 1) && !SciCall_IsSelectionRectangle())
 #define Sci_IsMultiOrRectangleSelection() ((SciCall_GetSelections() > 1) || SciCall_IsSelectionRectangle())
 
@@ -598,6 +633,7 @@ DeclareSciCallR0(IsSelectionRectangle, SELECTIONISRECTANGLE, bool)
 #define Sci_GetLastDocLineNumber() (SciCall_GetLineCount() - 1)
 
 #define Sci_GetLineStartPosition(position) SciCall_PositionFromLine(SciCall_LineFromPosition(position))
+#define Sci_GetLineEndPosition(position) SciCall_GetLineEndPosition(SciCall_LineFromPosition(position))
 
 // length of line w/o line-end chars (full use SciCall_LineLength()
 #define Sci_GetNetLineLength(line) (SciCall_GetLineEndPosition(line) - SciCall_PositionFromLine(line))
@@ -605,89 +641,150 @@ DeclareSciCallR0(IsSelectionRectangle, SELECTIONISRECTANGLE, bool)
 //~#define Sci_GetDocEndPosition() (SciCall_GetTextLength() - 1)
 #define Sci_GetDocEndPosition() SciCall_GetLineEndPosition(SciCall_GetLineCount())
 
+#define Sci_ClampAlpha(alpha) clampi((alpha), SC_ALPHA_TRANSPARENT, /*SC_ALPHA_OPAQUE*/SC_ALPHA_NOALPHA)
+
 // max. line length in range (incl. line-breaks)
-inline DocPos Sci_GetRangeMaxLineLength(DocLn iBeginLine, DocLn iEndLine) {
-  DocPos iMaxLineLen = 0;
-  for (DocLn iLine = iBeginLine; iLine <= iEndLine; ++iLine) {
-    DocPos const iLnLen = SciCall_LineLength(iLine);
-    if (iLnLen > iMaxLineLen) { iMaxLineLen = iLnLen; }
-  }
-  return iMaxLineLen;
+inline DocPos Sci_GetRangeMaxLineLength(DocLn iBeginLine, DocLn iEndLine)
+{
+    DocPos iMaxLineLen = 0;
+    for (DocLn iLine = iBeginLine; iLine <= iEndLine; ++iLine) {
+        DocPos const iLnLen = SciCall_LineLength(iLine);
+        if (iLnLen > iMaxLineLen) {
+            iMaxLineLen = iLnLen;
+        }
+    }
+    return iMaxLineLen;
 }
 
-// respect VSlop settings 
-inline void Sci_ScrollChooseCaret()      { SciCall_ScrollCaret(); SciCall_ChooseCaretX(); }
-inline void Sci_ScrollToLine(DocLn line) { SciCall_EnsureVisible(line); SciCall_ScrollRange(SciCall_PositionFromLine(line), SciCall_GetLineEndPosition(line)); }
-inline void Sci_ScrollToCurrentLine()    { Sci_ScrollToLine(Sci_GetCurrentLineNumber()); }
+// respect VSlop settings
+inline void Sci_GotoPosChooseCaret(const DocPos pos)
+{
+    SciCall_GotoPos(pos);
+    SciCall_ChooseCaretX();
+}
+inline void Sci_ScrollChooseCaret()
+{
+    SciCall_ScrollCaret();
+    SciCall_ChooseCaretX();
+}
+inline void Sci_ScrollToLine(const DocLn line)
+{
+    SciCall_EnsureVisible(line);
+    SciCall_ScrollRange(SciCall_PositionFromLine(line), SciCall_GetLineEndPosition(line));
+}
+inline void Sci_ScrollToCurrentLine()
+{
+    Sci_ScrollToLine(Sci_GetCurrentLineNumber());
+}
 
+inline void Sci_RedrawScrollbars()
+{
+    SciCall_SetHScrollbar(false);
+    SciCall_SetHScrollbar(true);
+    SciCall_SetVScrollbar(false);
+    SciCall_SetVScrollbar(true);
+}
 
 #define Sci_ReplaceTarget(M,L,T) (((M) == SCI_REPLACETARGET) ? SciCall_ReplaceTarget((L),(T)) : SciCall_ReplaceTargetRe((L),(T)))
 
 //  if iRangeEnd == -1 : apply style from iRangeStart to document end
 #define Sci_ApplyLexerStyle(B, E) SciCall_Colourise((DocPos)(B), (DocPos)(E));
+#define Sci_LexerStyleAll() SciCall_Colourise(0, -1)
 
-#define Sci_DisableMouseDWellNotification()  SciCall_SetMouseDWellTime(SC_TIME_FOREVER)  
+#define Sci_DisableMouseDWellNotification()  SciCall_SetMouseDWellTime(SC_TIME_FOREVER)
 
 // ----------------------------------------------------------------------------
 
 #define Sci_GetEOLLen() ((SciCall_GetEOLMode() == SC_EOL_CRLF) ? 2 : 1)
 
-inline int Sci_GetCurrentEOL_A(LPCH eol) {
-  switch (SciCall_GetEOLMode()) {
+inline int Sci_GetCurrentEOL_A(LPCH eol)
+{
+    switch (SciCall_GetEOLMode()) {
     case SC_EOL_CRLF:
-      if (eol) { eol[0] = '\r'; eol[1] = '\n'; eol[2] = '\0'; }
-      return 2;
+        if (eol) {
+            eol[0] = '\r';
+            eol[1] = '\n';
+            eol[2] = '\0';
+        }
+        return 2;
     case SC_EOL_CR:
-      if (eol) { eol[0] = '\r'; eol[1] = '\0'; }
-      return 1;
+        if (eol) {
+            eol[0] = '\r';
+            eol[1] = '\0';
+        }
+        return 1;
     case SC_EOL_LF:
-      if (eol) { eol[0] = '\n'; eol[1] = '\0'; }
-      return 1;
+        if (eol) {
+            eol[0] = '\n';
+            eol[1] = '\0';
+        }
+        return 1;
     default:
-      return 0;
-  }
+        return 0;
+    }
 }
 // ----------------------------------------------------------------------------
 
-inline int Sci_GetCurrentEOL_W(LPWCH eol) {
-  switch (SciCall_GetEOLMode()) {
+inline int Sci_GetCurrentEOL_W(LPWCH eol)
+{
+    switch (SciCall_GetEOLMode()) {
     case SC_EOL_CRLF:
-      if (eol) { eol[0] = L'\r'; eol[1] = L'\n'; eol[2] = L'\0'; }
-      return 2;
+        if (eol) {
+            eol[0] = L'\r';
+            eol[1] = L'\n';
+            eol[2] = L'\0';
+        }
+        return 2;
     case SC_EOL_CR:
-      if (eol) { eol[0] = L'\r'; eol[1] = L'\0'; }
-      return 1;
+        if (eol) {
+            eol[0] = L'\r';
+            eol[1] = L'\0';
+        }
+        return 1;
     case SC_EOL_LF:
-      if (eol) { eol[0] = L'\n'; eol[1] = L'\0'; }
-      return 1;
+        if (eol) {
+            eol[0] = L'\n';
+            eol[1] = L'\0';
+        }
+        return 1;
     default:
-      return 0;
-  }
+        return 0;
+    }
 }
 // ----------------------------------------------------------------------------
 
 
-inline DocPos Sci_GetSelectionStartEx() {
-  if (!Sci_IsMultiSelection()) { return SciCall_GetSelectionStart(); }
-  DocPosU const nsel = SciCall_GetSelections();
-  DocPos selStart = Sci_GetDocEndPosition() + 1;
-  for (DocPosU i = 0; i < nsel; ++i) {
-    DocPos const iStart = SciCall_GetSelectionNStart(i);
-    if (iStart < selStart) { selStart = iStart; }
-  }
-  return selStart;
+inline DocPos Sci_GetSelectionStartEx()
+{
+    if (!Sci_IsMultiSelection()) {
+        return SciCall_GetSelectionStart();
+    }
+    DocPosU const nsel = SciCall_GetSelections();
+    DocPos selStart = Sci_GetDocEndPosition() + 1;
+    for (DocPosU i = 0; i < nsel; ++i) {
+        DocPos const iStart = SciCall_GetSelectionNStart(i);
+        if (iStart < selStart) {
+            selStart = iStart;
+        }
+    }
+    return selStart;
 }
 // ----------------------------------------------------------------------------
 
-inline DocPos Sci_GetSelectionEndEx() {
-  if (!Sci_IsMultiSelection()) { return SciCall_GetSelectionEnd(); }
-  DocPosU const nsel = SciCall_GetSelections();
-  DocPos selEnd = 0;
-  for (DocPosU i = 0; i < nsel; ++i) {
-    DocPos const iEnd = SciCall_GetSelectionNEnd(i);
-    if (iEnd > selEnd) { selEnd = iEnd; }
-  }
-  return selEnd;
+inline DocPos Sci_GetSelectionEndEx()
+{
+    if (!Sci_IsMultiSelection()) {
+        return SciCall_GetSelectionEnd();
+    }
+    DocPosU const nsel = SciCall_GetSelections();
+    DocPos selEnd = 0;
+    for (DocPosU i = 0; i < nsel; ++i) {
+        DocPos const iEnd = SciCall_GetSelectionNEnd(i);
+        if (iEnd > selEnd) {
+            selEnd = iEnd;
+        }
+    }
+    return selEnd;
 }
 // ----------------------------------------------------------------------------
 

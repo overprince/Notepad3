@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Old Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Wil u alle lyneindes normaliseer om te '%s' wees?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + Klik om skakel in leser oop te maak."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Die behoud van die oorspronklike tydstempel vir lêerveranderings is geaktiveer.\nHierdie opsie bly vir hierdie sessie!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Die optredemarkers raak op (Bookmerk/Merk)!"
 END
 
 STRINGTABLE
@@ -232,7 +235,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MUI_TRANSL_AUTHOR   "(af-ZA) Afrikaanse vertaling deur Rizonesoft"
+    IDS_MUI_TRANSL_AUTHOR   "(af-ZA) Afrikaanse vertaling deur rizonesoft"
     IDS_MUI_TITLE_FIXBASE   " BASIS (%s)"
     IDS_MUI_TITLE_RELCUR    " +++ %s: %s Styl +++"
     IDS_MUI_TITLE_FIXCUR    " %s: %s Styl"
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "&Taal"
     IDS_MUI_MENU_THEMES     "&Skema-versameling"
-    IDM_THEMES_DEFAULT      "Fabriek Verstek"
-    IDM_THEMES_FILE_ITEM    "Standaard Instellings"
+    IDM_THEMES_DEFAULT      "&Fabriek Verstek"
+    IDM_THEMES_FILE_ITEM    "&Standaard"
     IDS_MUI_STATUSBAR_PREFIXES "Ln  ,Col  ,Sel  ,Sb  ,SLn  ,Occ  ,,,,,,,Ch  ,Repl  ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Maak alles skoon"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Vee geskiedenis uit"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Vee die vervang geskiedenis uit"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

@@ -39,7 +39,7 @@ void DarkModeHelper::AllowDarkModeForApp(BOOL allow)
     if (m_pAllowDarkModeForApp)
         m_pAllowDarkModeForApp(allow ? 1 : 0);
     if (m_pSetPreferredAppMode)
-        m_pSetPreferredAppMode(allow ? AllowDark : Default);
+        m_pSetPreferredAppMode(allow ? ForceDark : Default);
 }
 
 void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow)
@@ -50,9 +50,9 @@ void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow)
 
 BOOL DarkModeHelper::ShouldAppsUseDarkMode()
 {
-    if (m_pShouldAppsUseDarkMode)
+    if (m_pShouldAppsUseDarkMode && m_pAllowDarkModeForApp)
         return m_pShouldAppsUseDarkMode() & 0x01;
-    return FALSE;
+    return ShouldSystemUseDarkMode();
 }
 
 BOOL DarkModeHelper::IsDarkModeAllowedForWindow(HWND hwnd)
@@ -102,6 +102,12 @@ BOOL DarkModeHelper::SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONA
     return FALSE;
 }
 
+void DarkModeHelper::RefreshTitleBarThemeColor(HWND hWnd, BOOL dark)
+{
+    WINDOWCOMPOSITIONATTRIBDATA data = {WCA_USEDARKMODECOLORS, &dark, sizeof(dark)};
+    SetWindowCompositionAttribute(hWnd, &data);
+}
+
 DarkModeHelper::DarkModeHelper()
 {
     INITCOMMONCONTROLSEX used = {
@@ -112,12 +118,13 @@ DarkModeHelper::DarkModeHelper()
     m_bCanHaveDarkMode = false;
     PWSTR sysPath      = nullptr;
     long  micro        = 0;
+    std::wstring dllPath;
     if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_System, 0, nullptr, &sysPath)))
     {
-        std::wstring dllPath = sysPath;
+        dllPath = sysPath;
         CoTaskMemFree(sysPath);
         dllPath += L"\\uxtheme.dll";
-        auto                      version = CPathUtils::GetVersionFromFile(L"uxtheme.dll");
+        auto                      version = CPathUtils::GetVersionFromFile(dllPath);
         std::vector<std::wstring> tokens;
         stringtok(tokens, version, false, L".");
         if (tokens.size() == 4)
@@ -140,8 +147,10 @@ DarkModeHelper::DarkModeHelper()
             }
         }
     }
-
+    if (dllPath.empty())
     m_hUxthemeLib = LoadLibrary(L"uxtheme.dll");
+    else
+        m_hUxthemeLib = LoadLibrary(dllPath.c_str());
     if (m_hUxthemeLib && m_bCanHaveDarkMode)
     {
         // Note: these functions are undocumented! Which meas I shouldn't even use them.

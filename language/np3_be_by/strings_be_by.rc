@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Old Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Жадаеце нармалізаваць усе канчаткі радкоў у '%s'?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\nCtrl + Click, каб адкрыць спасылку ў браўзеры."
     IDS_MUI_INF_PRSVFILEMODTM
                              "Захоўванне зыходняй часаадзнакі змянення файла ўключана.\nГэта опцыя застанецца ўключанай для гэтай сесіі!"
+    IDS_MUI_OUT_OFF_OCCMRK   "Маркеры ўваходжанняў (закладка/падсвечванне) на зыходзе!"
 END
 
 STRINGTABLE
@@ -249,10 +252,17 @@ STRINGTABLE
 BEGIN
     IDS_MUI_MENU_LANGUAGE   "&Мова"
     IDS_MUI_MENU_THEMES     "&Калекцыя схем"
-    IDM_THEMES_DEFAULT      "Завадскія налады"
-    IDM_THEMES_FILE_ITEM    "Стандартныя налады"
+    IDM_THEMES_DEFAULT      "&Завадскія налады"
+    IDM_THEMES_FILE_ITEM    "&Стандартныя"
     IDS_MUI_STATUSBAR_PREFIXES "Ln  ,Col  ,Sel  ,Sb  ,SLn  ,Occ  ,,,,,,,Ch  ,Repl  ,Eval  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Ачысціць усё"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Ачысціць гісторыю пошука"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Ачысціць гісторыю замен"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

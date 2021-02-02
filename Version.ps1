@@ -23,6 +23,7 @@ function DebugOutput($msg)
 {
 	#~return ## disabled debug output
 	if ($msg -ne $null) { 
+      	Write-Host ""
 		Write-Host "$msg"
 	}
 }
@@ -86,13 +87,13 @@ try
 
 	$SciVer = [string](Get-Content "scintilla\version.txt")
 	if (!$SciVer) { $SciVer = 0 }
-	$OnigVer = [string](Get-Content "oniguruma\version.txt")
+	$OnigVer = [string](Get-Content "scintilla\oniguruma\version.txt")
 	if (!$OnigVer) { $OnigVer = "0.0.0" }
-	$UChardetVer = [string](Get-Content "uchardet\version.txt")
+	$UChardetVer = [string](Get-Content "src\uchardet\version.txt")
 	if (!$UChardetVer) { $UChardetVer = "0.0.0" }
-	$TinyExprVer = [string](Get-Content "tinyexpr\version.txt")
+	$TinyExprVer = [string](Get-Content "src\tinyexpr\version.txt")
 	if (!$TinyExprVer) { $TinyExprVer = "0.0.0" }
-	$UtHashVer = [string](Get-Content "uthash\version.txt")
+	$UtHashVer = [string](Get-Content "src\uthash\version.txt")
 	if (!$UtHashVer) { $UtHashVer = "0.0.0" }
 
 #~if ($VerPatch) { $VerPatch = " $VerPatch" }  # ensure space in front of string
@@ -127,6 +128,7 @@ finally
 {
 	[Environment]::SetEnvironmentVariable("LASTEXITCODE", $LastExitCode, "User")
 	$host.SetShouldExit($LastExitCode)
+	Write-Host ""
 	Write-Host "VersionPatching: Done! Elapsed time: $($stopwatch.Elapsed)."
 	Exit $LastExitCode
 }

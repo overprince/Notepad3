@@ -7,7 +7,7 @@
 * Config.h                                                                    *
 *   Methods to read and write configuration                                   *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -35,7 +35,7 @@ bool SaveWindowPositionSettings(bool bClearSettings);
 bool SaveAllSettings(bool bForceSaveSettings);
 void CmdSaveSettingsNow();
 
-  bool OpenSettingsFile(bool* keepCached);
+bool OpenSettingsFile(bool* keepCached);
 bool CloseSettingsFile(bool bSaveChanges, bool keepCached);
 
 // ----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ bool IsIniFileCached();
 bool SaveIniFileCache(LPCWSTR lpIniFilePath);
 bool ResetIniFileCache();
 
-size_t IniSectionGetString(LPCWSTR lpSectionName, LPCWSTR lpKeyName, LPCWSTR lpDefault, 
+size_t IniSectionGetString(LPCWSTR lpSectionName, LPCWSTR lpKeyName, LPCWSTR lpDefault,
                            LPWSTR lpReturnedString, size_t cchReturnedString);
 int IniSectionGetInt(LPCWSTR lpSectionName, LPCWSTR lpKeyName, int iDefault);
 long IniSectionGetLong(LPCWSTR lpSectionName, LPCWSTR lpKeyName, long lDefault);
@@ -53,8 +53,9 @@ long long IniSectionGetLongLong(LPCWSTR lpSectionName, LPCWSTR lpKeyName, long l
 double IniSectionGetDouble(LPCWSTR lpSectionName, LPCWSTR lpKeyName, double dDefault);
 bool IniSectionGetBool(LPCWSTR lpSectionName, LPCWSTR lpKeyName, bool bDefault);
 
-inline DocPos IniSectionGetPos(LPCWSTR lpSectionName, LPCWSTR lpKeyName, DocPos posDefault) {
-  return (DocPos)IniSectionGetLongLong(lpSectionName, lpKeyName, posDefault);
+inline DocPos IniSectionGetPos(LPCWSTR lpSectionName, LPCWSTR lpKeyName, DocPos posDefault)
+{
+    return (DocPos)IniSectionGetLongLong(lpSectionName, lpKeyName, posDefault);
 }
 
 // ----------------------------------------------------------------------------
@@ -67,8 +68,9 @@ bool IniSectionSetHex(LPCWSTR lpSectionName, LPCWSTR lpKeyName, int iValue);
 bool IniSectionSetDouble(LPCWSTR lpSectionName, LPCWSTR lpKeyName, double dValue);
 bool IniSectionSetBool(LPCWSTR lpSectionName, LPCWSTR lpKeyName, bool bValue);
 
-inline bool IniSectionSetPos(LPCWSTR lpSectionName, LPCWSTR lpKeyName, DocPos posValue) {
-  return IniSectionSetLongLong(lpSectionName, lpKeyName, posValue);
+inline bool IniSectionSetPos(LPCWSTR lpSectionName, LPCWSTR lpKeyName, DocPos posValue)
+{
+    return IniSectionSetLongLong(lpSectionName, lpKeyName, posValue);
 }
 
 // ----------------------------------------------------------------------------
@@ -89,7 +91,7 @@ bool IniClearAllSections(LPCWSTR lpPrefix, bool bRemoveEmpty);
 // ----------------------------------------------------------------------------
 
 // ==========================================
-// open file , get/set value, save(set) file 
+// open file , get/set value, save(set) file
 // ==========================================
 
 size_t IniFileGetString(LPCWSTR lpFilePath, LPCWSTR lpSectionName, LPCWSTR lpKeyName, LPCWSTR lpDefault,
@@ -129,7 +131,7 @@ bool      MRU_Add(LPMRULIST pmru, LPCWSTR pszNew, cpi_enc_t iEnc, DocPos iPos, D
 bool      MRU_FindFile(LPMRULIST pmru, LPCWSTR pszFile, int* iIndex);
 bool      MRU_AddFile(LPMRULIST pmru, LPWSTR pszFile, bool bRelativePath, bool bUnexpandMyDocs, cpi_enc_t iEnc, DocPos iPos, DocPos iSelAnc, LPCWSTR pszBookMarks);
 bool      MRU_Delete(LPMRULIST pmru, int iIndex);
-bool      MRU_Empty(LPMRULIST pmru);
+bool      MRU_Empty(LPMRULIST pmru, bool bExceptLeast);
 int       MRU_Enum(LPMRULIST pmru, int iIndex, LPWSTR pszItem, int cchItem);
 bool      MRU_Load(LPMRULIST pmru, bool bFileProps);
 void      MRU_Save(LPMRULIST pmru);

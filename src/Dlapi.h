@@ -8,7 +8,7 @@
 *   Definitions for Directory Listing APIs                                    *
 *   Based on code from Notepad2, (c) Florian Balmer 1996-2011                 *
 *                                                                             *
-*                                                  (c) Rizonesoft 2008-2020   *
+*                                                  (c) Rizonesoft 2008-2021   *
 *                                                    https://rizonesoft.com   *
 *                                                                             *
 *                                                                             *
@@ -27,10 +27,9 @@ extern "C" { // C-Declarations
 //==== DirList ================================================================
 
 //==== LV_ITEMDATA Structure ==================================================
-typedef struct tagLV_ITEMDATA // lvid
-{
-  LPITEMIDLIST  pidl; // Item Id
-  LPSHELLFOLDER lpsf; // Parent IShellFolder Interface
+typedef struct tagLV_ITEMDATA { // lvid
+    LPITEMIDLIST  pidl; // Item Id
+    LPSHELLFOLDER lpsf; // Parent IShellFolder Interface
 
 } LV_ITEMDATA, *LPLV_ITEMDATA;
 
@@ -101,13 +100,12 @@ bool DirList_Sort(HWND hwnd,int lFlags,bool);
 #define DLI_TYPE     4
 #define DLI_ALL (1|2|4)
 
-typedef struct tagDLITEM // dli
-{
+typedef struct tagDLITEM { // dli
 
-  UINT mask;
-  WCHAR szFileName[MAX_PATH];
-  WCHAR szDisplayName[MAX_PATH];
-  int  ntype;
+    UINT mask;
+    WCHAR szFileName[MAX_PATH];
+    WCHAR szDisplayName[MAX_PATH];
+    int  ntype;
 
 } DLITEM, *LPDLITEM;
 
@@ -137,10 +135,10 @@ bool DirList_SelectItem(HWND hwnd,LPCWSTR lpszDisplayName,LPCWSTR lpszFullPath);
 #define DL_FILTER_BUFSIZE 128
 
 typedef struct tagDL_FILTER { //dlf
-  int   nCount;
-  WCHAR  tFilterBuf[DL_FILTER_BUFSIZE];
-  WCHAR  *pFilter  [DL_FILTER_BUFSIZE];
-  bool  bExcludeFilter;
+    int   nCount;
+    WCHAR  tFilterBuf[DL_FILTER_BUFSIZE];
+    WCHAR  *pFilter  [DL_FILTER_BUFSIZE];
+    bool  bExcludeFilter;
 } DL_FILTER, *PDL_FILTER;
 
 void DirList_CreateFilter(PDL_FILTER pdlf,LPCWSTR lpszFileSpec,bool);

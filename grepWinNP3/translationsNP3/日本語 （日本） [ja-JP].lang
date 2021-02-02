@@ -61,17 +61,25 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr "Stefan Küng のサイトを開く"
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr "<a>grepWinNP3 について...</a>"
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
 msgstr "grepWinNP3 について"
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
-msgstr "プリセットに追加"
+msgid "Add to Presets..."
+msgstr "プリセットに追加..."
 
 #. Resource IDs: (155)
 msgid "All Files"
@@ -297,7 +305,7 @@ msgstr "より古い"
 
 #. Resource IDs: (1063)
 msgid "Only one instance"
-msgstr "多重に起動しない(注・常にオン)"
+msgstr "多重に起動しない"
 
 #. Resource IDs: (142)
 msgid "Open containing folder"
@@ -324,12 +332,12 @@ msgid "Preset name"
 msgstr "プリセット名"
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
-msgstr "プリセット"
+msgid "Presets..."
+msgstr "プリセット..."
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
-msgstr ".: F1 キーでヘルプ表示 :."
+msgid "Press F1 for help..."
+msgstr "F1 キーでヘルプ表示..."
 
 #. Resource IDs: (154)
 msgid "Programs"
@@ -421,8 +429,8 @@ msgid "Select path to search"
 msgstr "検索するパスを選択"
 
 #. Resource IDs: (1071)
-msgid "Settings"
-msgstr "設定"
+msgid "Settings..."
+msgstr "設定..."
 
 #. Resource IDs: (133)
 msgid "Size"
@@ -433,8 +441,8 @@ msgid "Size is"
 msgstr "サイズ指定"
 
 #. Resource IDs: (1028)
-msgid "Test regex"
-msgstr "正規表現テスト"
+msgid "Test regex..."
+msgstr "正規表現テスト..."
 
 #. Resource IDs: (136)
 msgid "Text"
@@ -463,10 +471,6 @@ msgstr "ファイルを UTF-8 として処理"
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
 msgstr "ファイルをバイナリとして処理"
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
-msgstr "Stefan Küng のサイトを開く"
 
 #. Resource IDs: (116)
 msgid "a regular expression used for searching. Press F1 for more info."
@@ -563,7 +567,7 @@ msgstr "正規表現 - OK"
 
 #. Resource IDs: (117)
 msgid "reuse grepWinNP3 instances."
-msgstr "grepWinNP3 のインスタンスを再利用します。(注: grepWinNP3 では設定無効で常に再利用)"
+msgstr "grepWinNP3 のインスタンスを再利用します。"
 
 #. Resource IDs: (151)
 #, c-format
@@ -574,6 +578,10 @@ msgstr "ファイルをスキャン中 '%s'"
 msgid "search string is empty"
 msgstr "検索文字列が空です"
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr "grepWinNP3 の新規ウィンドウを開く"
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr "パスは再帰的に検索されます。\nパスを「|」で区切ることができます。\n指定例: c:\\temp|d:\\logs"
@@ -581,6 +589,10 @@ msgstr "パスは再帰的に検索されます。\nパスを「|」で区切る
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr "フォルダを除外できます。CVS と images を除外する例です。\n指定例: ^(CVS|images)$\n注: Windows では「.svn」フォルダは隠されているため、通常はスキャンされません。"
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -597,4 +609,8 @@ msgstr "最大スレッド数"
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
 msgstr "これにより右クリックメニューに「エディタで開く」という新規項目を追加します"
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
+msgstr "常に手前に表示"
 

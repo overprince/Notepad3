@@ -22,6 +22,7 @@
 #include "version.h"
 #include "Theme.h"
 #include "DPIAware.h"
+#include <shellapi.h>
 #include <string>
 
 extern HICON g_hDlgIcon128;
@@ -42,13 +43,13 @@ static LRESULT DrawGrepWinIcon(HWND hWnd)
     if (g_hDlgIcon128)
     {
         PAINTSTRUCT ps;
-        HDC const  hDC  = GetWindowDC(hWnd);
+        HDC const  hDC  = GetDC(hWnd);
         if (hDC)
         {
             BeginPaint(hWnd, &ps);
             int const    dpiSized  = CDPIAware::Instance().Scale(hWnd, 64);
-            int const    dpiLeft   = CDPIAware::Instance().Scale(hWnd, 22);
-            int const    dpiTop    = CDPIAware::Instance().Scale(hWnd, 44);
+            int const    dpiLeft   = CDPIAware::Instance().Scale(hWnd, 12);
+            int const    dpiTop    = CDPIAware::Instance().Scale(hWnd, 12);
             HBRUSH const hBrush    = (HBRUSH)GetSysColorBrush(COLOR_3DFACE);
             DrawIconEx(hDC, dpiLeft, dpiTop, g_hDlgIcon128, dpiSized, dpiSized, 0, hBrush, DI_NORMAL);
             ReleaseDC(hWnd, hDC);
@@ -69,16 +70,18 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback(
                 [this]() {
                     CTheme::Instance().SetThemeForDialog(*this, CTheme::Instance().IsDarkTheme());
+                    CTheme::Instance().SetFontForDialog(*this, CTheme::Instance().GetDlgFontFaceName(), CTheme::Instance().GetDlgFontSize());
                 });
             m_link.ConvertStaticToHyperlink(hwndDlg, IDC_WEBLINK, L"http://tools.stefankueng.com");
             CTheme::Instance().SetThemeForDialog(*this, CTheme::Instance().IsDarkTheme());
+            CTheme::Instance().SetFontForDialog(*this, CTheme::Instance().GetDlgFontFaceName(), CTheme::Instance().GetDlgFontSize());
             InitDialog(hwndDlg, IDI_GREPWIN);
             CLanguage::Instance().TranslateWindow(*this);
-            TCHAR buf[MAX_PATH] = {0};
+            wchar_t buf[MAX_PATH] = {0};
 #if defined(_WIN64)
-            _stprintf_s(buf, _countof(buf), L"grepWinNP3 (x64) version %ld.%ld.%ld.%ld", GREPWIN_VERMAJOR, GREPWIN_VERMINOR, GREPWIN_VERMICRO, GREPWIN_VERBUILD);
+            swprintf_s(buf, _countof(buf), L"grepWinNP3 (x64) version %ld.%ld.%ld.%ld", GREPWIN_VERMAJOR, GREPWIN_VERMINOR, GREPWIN_VERMICRO, GREPWIN_VERBUILD);
 #else
-            _stprintf_s(buf, _countof(buf), L"grepWinNP3 (x86) version %ld.%ld.%ld.%ld", GREPWIN_VERMAJOR, GREPWIN_VERMINOR, GREPWIN_VERMICRO, GREPWIN_VERBUILD);
+            swprintf_s(buf, _countof(buf), L"grepWinNP3 (x86) version %ld.%ld.%ld.%ld", GREPWIN_VERMAJOR, GREPWIN_VERMINOR, GREPWIN_VERMICRO, GREPWIN_VERBUILD);
 #endif
             SetDlgItemText(*this, IDC_VERSIONINFO, buf);
             SetDlgItemText(*this, IDC_DATE, TEXT(GREPWIN_VERDATE));
@@ -89,6 +92,30 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
         return DoCommand(LOWORD(wParam), HIWORD(wParam));
         case WM_CLOSE:
             CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
+            break;
+        case WM_NOTIFY:
+        {
+            switch (wParam)
+            {
+            case IDC_WEBLINK:
+                switch (((LPNMHDR)lParam)->code)
+                {
+                case NM_CLICK:
+                case NM_RETURN:
+                {
+                    PNMLINK pNMLink = (PNMLINK)lParam;
+                    LITEM   item = pNMLink->item;
+                    if (item.iLink == 0)
+                    {
+                        ShellExecute(*this, L"open", item.szUrl, nullptr, nullptr, SW_SHOW);
+                    }
+                    break;
+                }
+                }
+                break;
+
+            }
+        }
         break;
         default:
             return FALSE;

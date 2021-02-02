@@ -1,13 +1,13 @@
-;* Notepad3 - Installer script
+﻿;* Notepad3 - Installer script
 ;*
-;* (c) Rizonesoft 2008-2020
+;* (c) Rizonesoft 2008-2021
 
 ; Requirements:
-; Inno Setup: http://www.jrsoftware.org/isdl.php
+; Inno Setup: https://www.jrsoftware.org/isdl.php
 
 ; Preprocessor related stuff
-#if VER < EncodeVer(5,5,9)
-  #error Update your Inno Setup version (5.5.9 or newer)
+#if VER < EncodeVer(6,0,5)
+  #error Update your Inno Setup version (6.0.5 or newer)
 #endif
 
 #define bindir "..\Bin"
@@ -31,7 +31,7 @@
 #define app_name      "Notepad3"
 #define app_publisher "Rizonesoft"
 #define app_version   GetFileVersion(bindir + "\Release_x86_v142\Notepad3.exe")
-#define app_copyright "(c) Rizonesoft 2008-2020"
+#define app_copyright "Copyright © 2008-2021 Rizonesoft"
 #define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 
@@ -46,10 +46,10 @@ AppSupportURL=https://rizonesoft.com
 AppUpdatesURL=https://rizonesoft.com
 AppContact=https://rizonesoft.com
 AppCopyright={#app_copyright}
-;VersionInfoVersion={#app_version}
+VersionInfoVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad3.exe
 UninstallDisplayName={#app_name} {#app_version}
-DefaultDirName={pf}\Notepad3
+DefaultDirName={commonpf}\Notepad3
 LicenseFile="..\License.txt"
 OutputDir=.\Packages
 OutputBaseFilename={#app_name}_{#app_version}_Setup
@@ -65,7 +65,8 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=yes
-MinVersion=6.0
+UsedUserAreasWarning=no
+MinVersion=0,6.1sp1
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
 #ifexist "..\signinfo_notepad3.txt"
@@ -237,26 +238,9 @@ Source: {#bindir}\Release_x86_v142\lng\zh-TW\mplng.dll.mui;         DestDir: {ap
 Source: {#bindir}\Release_x64_v142\lng\zh-TW\np3lng.dll.mui;        DestDir: {app}\lng\zh-TW;                           Flags: ignoreversion;                         Check: Is64BitInstallMode()
 Source: {#bindir}\Release_x86_v142\lng\zh-TW\np3lng.dll.mui;        DestDir: {app}\lng\zh-TW;                           Flags: ignoreversion;                         Check: not Is64BitInstallMode()
 Source: Changes.txt;                                                DestDir: {app}\Docs;                                Flags: ignoreversion
-Source: Docs\KeyboardShortcuts.txt;                                 DestDir: {app}\Docs;                                Flags: ignoreversion
-Source: Docs\Oniguruma_RE.txt;                                      DestDir: {app}\Docs;                                Flags: ignoreversion
-Source: Docs\Notepad3.txt;                                          DestDir: {app}\Docs;                                Flags: ignoreversion
-Source: Docs\crypto\encryption-doc.txt;                             DestDir: {app}\Docs\crypto;                         Flags: ignoreversion
-Source: Docs\crypto\read_me.txt;                                    DestDir: {app}\Docs\crypto;                         Flags: ignoreversion
-Source: Docs\uthash\banner.png;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\banner.svg;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\ChangeLog.txt;                                  DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\index.html;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\license.html;                                   DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\rss.png;                                        DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\styles.css;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\userguide.txt;                                  DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\utarray.txt;                                    DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\uthash.png;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\uthash-mini.png;                                DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\uthash-mini.svg;                                DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\utlist.txt;                                     DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\utringbuffer.txt;                               DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
-Source: Docs\uthash\utstring.txt;                                   DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
+Source: Docs\*.txt;                                                 DestDir: {app}\Docs;                                Flags: ignoreversion
+Source: Docs\crypto\*.txt;                                          DestDir: {app}\Docs\crypto;                         Flags: ignoreversion
+Source: Docs\uthash\*.txt;                                          DestDir: {app}\Docs\uthash;                         Flags: ignoreversion
 
 
 [Dirs]
@@ -283,10 +267,10 @@ Filename: https://www.rizonesoft.com/downloads/notepad3/update/; Description: {c
 
 
 [InstallDelete]
-Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
-Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
-Type: files;      Name: {userstartmenu}\{#app_name}.lnk; Check: not IsTaskSelected('startup_icon')       and IsUpgrade()
-Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 6.01
+Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not WizardIsTaskSelected('desktopicon\user')   and IsUpgrade()
+Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not WizardIsTaskSelected('desktopicon\common') and IsUpgrade()
+Type: files;      Name: {userstartmenu}\{#app_name}.lnk; Check: not WizardIsTaskSelected('startup_icon')       and IsUpgrade()
+Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not WizardIsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 6.01
 Type: files;      Name: {app}\Notepad3.ini
 Type: files;      Name: {app}\Readme.txt
 Type: files;      Name: {app}\minipath.ini
@@ -382,7 +366,7 @@ end;
 function IsOldBuildInstalled(sInfFile: String): Boolean;
 begin
   if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') and
-  FileExists(ExpandConstant('{pf}\Notepad2\' + sInfFile)) then
+  FileExists(ExpandConstant('{commonpf}\Notepad2\' + sInfFile)) then
     Result := True
   else
     Result := False;
@@ -424,7 +408,7 @@ begin
   // default return value
   Result := 0;
   // TODO: use RegQueryStringValue
-  if not Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx ' + '"{pf}\Notepad2\' + sInfFile +'",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+  if not Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx ' + '"{commonpf}\Notepad2\' + sInfFile +'",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
     Result := 1;
   end
   else begin
@@ -479,7 +463,7 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then begin
-    if IsTaskSelected('reset_settings') then
+    if WizardIsTaskSelected('reset_settings') then
       CleanUpSettings();
 
     if IsOldBuildInstalled('Uninstall.inf') or IsOldBuildInstalled('Notepad2.inf') then begin
@@ -501,21 +485,21 @@ begin
 
       // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
       // and the set_default task isn't selected
-      if not IsTaskSelected('remove_default') then
+      if not WizardIsTaskSelected('remove_default') then
         RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad3.exe" /z'));
     end;
   end;
 
   if CurStep = ssPostInstall then begin
-    if IsTaskSelected('set_default') then
+    if WizardIsTaskSelected('set_default') then
       RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad3.exe" /z'));
-    if IsTaskSelected('remove_default') then
+    if WizardIsTaskSelected('remove_default') then
       RegDeleteValue(HKLM, IFEO, 'Debugger');
       RegDeleteKeyIfEmpty(HKLM, IFEO);
-    if IsTaskSelected('set_openwith') then
+    if WizardIsTaskSelected('set_openwith') then
       RegWriteStringValue(HKCR, '*\shell\Open with Notepad3', 'Icon', ExpandConstant('{app}\Notepad3.exe,0'));
       RegWriteStringValue(HKCR, '*\shell\Open with Notepad3\command', '', ExpandConstant('"{app}\Notepad3.exe" "%1"'));
-    if IsTaskSelected('remove_openwith') then begin
+    if WizardIsTaskSelected('remove_openwith') then begin
       RegDeleteKeyIncludingSubkeys(HKCR, '*\shell\Open with Notepad3');
     end;
     // Always add Notepad3's AppUserModelID and the rest registry values

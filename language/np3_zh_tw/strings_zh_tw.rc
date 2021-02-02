@@ -158,6 +158,8 @@ BEGIN
     IDS_MUI_EOLMODENAME_CRLF   "Windows (CR+LF)"
     IDS_MUI_EOLMODENAME_LF     "Unix/Mac (LF)"
     IDS_MUI_EOLMODENAME_CR     "Old Mac (CR)"
+    IDS_MUI_WARN_NORMALIZE_EOLS
+                            "Do you want to normalise all line endings to be '%s'?"
 END
 
 STRINGTABLE
@@ -197,6 +199,7 @@ BEGIN
     IDS_MUI_URL_OPEN_BROWSER "\n按住 Ctrl 同時點選以在瀏覽器中打開鏈接。"
     IDS_MUI_INF_PRSVFILEMODTM
                              "已啟用維持檔案最後修改時間功能。\n\n本選項將在目前會話期間生效。"
+    IDS_MUI_OUT_OFF_OCCMRK   "Running out of Occurrence Markers (Bookmark/Highlight)!"
 END
 
 STRINGTABLE
@@ -232,7 +235,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MUI_TRANSL_AUTHOR   "(zh-TW) 繁體中文翻譯 by it4u"
+    IDS_MUI_TRANSL_AUTHOR   "(zh-TW) 繁體中文翻譯 by kenneth-ran"
     IDS_MUI_TITLE_FIXBASE   " BASE (%s)"
     IDS_MUI_TITLE_RELCUR    " +++ %s: %s Style +++"
     IDS_MUI_TITLE_FIXCUR    " %s: %s Style"
@@ -250,9 +253,16 @@ BEGIN
     IDS_MUI_MENU_LANGUAGE   "語言(&L)"
     IDS_MUI_MENU_THEMES     "語法高亮方案(&S)"
     IDM_THEMES_DEFAULT      "工廠預設(&F)"
-    IDM_THEMES_FILE_ITEM    "標準設定(&S)"
+    IDM_THEMES_FILE_ITEM    "標準 (&S)"  // Keep blank space before (&S)
     IDS_MUI_STATUSBAR_PREFIXES "行  ,列  ,選定  ,位元組  ,選行  ,符合  ,,,,,,,字元  ,改寫  ,求值  ,"
     IDS_MUI_STATUSBAR_POSTFIXES ",,,,,,,,,,,,,,,"
+    IDS_CLEAR_ALL           "Clear All"
+    IDS_MUI_CLEAR_FIND_HISTORY
+                            "Clear Find History"
+    IDS_MUI_CLEAR_REPL_HISTORY
+                            "Clear Replace History"
+    IDS_MUI_WRAPSEARCH_FWD  "Wrap-Around match from top  %s"
+    IDS_MUI_WRAPSEARCH_BCK  "Wrap-Around match from bottom  %s"
 END
 
 STRINGTABLE

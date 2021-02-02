@@ -61,17 +61,25 @@ msgstr "..."
 msgid "/"
 msgstr "/"
 
+#. Resource IDs: (1045)
+msgid "Visit Stefan Küng's website"
+msgstr "Посетить сайт Stefan Küng"
+
+#. Resource IDs: (1052)
+msgid "<a>about grepWinNP3...</a>"
+msgstr "<a>о grepWinNP3...</a>"
+
 #. Resource IDs: (1086)
 msgid ">>>"
 msgstr ">>>"
 
-#. Resource IDs: (1052, 135)
+#. Resource IDs: (135)
 msgid "About grepWinNP3"
 msgstr "О grepWinNP3"
 
 #. Resource IDs: (1021)
-msgid "Add to Presets"
-msgstr "Доб. в пресеты"
+msgid "Add to Presets..."
+msgstr "Доб. в пресеты..."
 
 #. Resource IDs: (155)
 msgid "All Files"
@@ -324,12 +332,12 @@ msgid "Preset name"
 msgstr "Имя пресета"
 
 #. Resource IDs: (1022, 132)
-msgid "Presets"
-msgstr "Пресеты"
+msgid "Presets..."
+msgstr "Пресеты..."
 
 #. Resource IDs: (1065)
-msgid "Press F1 for help"
-msgstr "F1 для справки"
+msgid "Press F1 for help..."
+msgstr "F1 для справки..."
 
 #. Resource IDs: (154)
 msgid "Programs"
@@ -421,8 +429,8 @@ msgid "Select path to search"
 msgstr "Выбор пути поиска"
 
 #. Resource IDs: (1071)
-msgid "Settings"
-msgstr "Настройки"
+msgid "Settings..."
+msgstr "Настройки..."
 
 #. Resource IDs: (133)
 msgid "Size"
@@ -433,8 +441,8 @@ msgid "Size is"
 msgstr "Размер"
 
 #. Resource IDs: (1028)
-msgid "Test regex"
-msgstr "Тест regex"
+msgid "Test regex..."
+msgstr "Тест regex..."
 
 #. Resource IDs: (136)
 msgid "Text"
@@ -463,10 +471,6 @@ msgstr "Файлы как UTF-8"
 #. Resource IDs: (1054)
 msgid "Treat files as binary"
 msgstr "Файлы как бинарные"
-
-#. Resource IDs: (1045)
-msgid "Visit Stefan Küng's website"
-msgstr "Посетить сайт Stefan Küng"
 
 #. Resource IDs: (116)
 msgid "a regular expression used for searching. Press F1 for more info."
@@ -574,6 +578,10 @@ msgstr "Поиск файлов '%s'"
 msgid "search string is empty"
 msgstr "Строка поиска пуста"
 
+#. Resource IDs: (170, 171)
+msgid "Start new grepWinNP3 window"
+msgstr "Открыть новое окно grepWinNP3"
+
 #. Resource IDs: (114)
 msgid "the path(s) which is searched recursively.\nSeparate paths with the '|' symbol.\nExample: c:\\temp|d:\\logs"
 msgstr "Рекурсивный поиск путей.\nРазделение путей знаком |.\nПример: c:\\temp|d:\\logs"
@@ -581,6 +589,10 @@ msgstr "Рекурсивный поиск путей.\nРазделение пу
 #. Resource IDs: (113)
 msgid "you can exclude directories, e.g. CVS and images.\nExample: ^(CVS|images)$\nNote, '.svn' folders are 'hidden' on Windows, so they usually are not scanned."
 msgstr "Можно исключать папки, например, CVS и images.\nПример: ^(CVS|images)$\nВнимание: папки '.svn' скрыты в Windows, поэтому они обычно не сканируются."
+
+#. Resource IDs: (1024)
+msgid "Y"
+msgstr "Y"
 
 #. Resource IDs: (3000)
 msgid "Reset"
@@ -597,4 +609,8 @@ msgstr "Макс. параллельных воркеров"
 #. Resource IDs: (3005)
 msgid "This adds a new entry to the context menu named 'Open with Editor'"
 msgstr "Добавляет пункт в контекстное меню с названием 'Открыть в редакторе'"
+
+#. Resource IDs: (3006)
+msgid "Stay On Top"
+msgstr "Поверх других окон"
 

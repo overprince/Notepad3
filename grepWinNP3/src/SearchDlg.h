@@ -24,7 +24,6 @@
 #include "FileDropTarget.h"
 #include "AutoComplete.h"
 #include "Registry.h"
-#include "hyperlink.h"
 #include "EditDoubleClick.h"
 #include "StringUtils.h"
 #include <string>
@@ -35,13 +34,19 @@
 #include <thread>
 #endif
 
+#include <wrl.h>
+using namespace Microsoft::WRL;
 
 #define SEARCH_START         (WM_APP+1)
 #define SEARCH_PROGRESS      (WM_APP+2)
 #define SEARCH_END           (WM_APP+3)
 #define WM_GREPWIN_THREADEND (WM_APP+4)
 
-#define ID_ABOUTBOX          0x0010
+#define ID_ABOUTBOX         0x0010
+#define ID_CLONE            0x0011
+#define ID_STAY_ON_TOP      0x0022
+
+#define ALPHA_OPAQUE         (255)
 
 enum ExecuteAction
 {
@@ -65,6 +70,14 @@ typedef struct _SearchFlags_t
     bool bCaptureSearch;
 
 } SearchFlags_t;
+
+#define GREPWINNP3_CPYDAT 4711
+typedef struct _CopyData_t
+{
+    wchar_t searchFor[1024];
+    wchar_t searchPath[MAX_PATH << 8];
+
+} CopyData_t;
 
 
 /**
@@ -119,7 +132,7 @@ protected:
     void                    UpdateInfoLabel();
     bool                    SaveSettings();
     void                    SaveWndPosition();
-    void                    formatDate(TCHAR date_native[], const FILETIME& filetime, bool force_short_fmt);
+    void                    formatDate(wchar_t date_native[], const FILETIME& filetime, bool force_short_fmt);
     int                     CheckRegex();
     bool                    MatchPath(LPCTSTR pathbuf);
     void                    AutoSizeAllColumns();
@@ -130,6 +143,7 @@ protected:
     void                    ShowUpdateAvailable();
     bool                    IsVersionNewer(const std::wstring& sVer);
 #endif
+    bool                    CloneWindow();
 private:
     static bool             NameCompareAsc(const CSearchInfo& Entry1, const CSearchInfo& Entry2);
     static bool             SizeCompareAsc(const CSearchInfo& Entry1, const CSearchInfo& Entry2);
@@ -150,6 +164,7 @@ private:
 private:
     HWND                    m_hParent;
     CBookmarksDlg *         m_pBookmarksDlg;
+    ComPtr<ITaskbarList3>   m_pTaskbarList;
 
     std::wstring            m_searchpath;
     std::wstring            m_searchString;
@@ -195,6 +210,8 @@ private:
     bool                    m_bConfirmationOnReplace;
     bool                    m_showContent;
     bool                    m_showContentSet;
+    bool                    m_bStayOnTop;
+    BYTE                    m_OpacityNoFocus;
 
     std::vector<CSearchInfo> m_items;
     std::vector<std::tuple<int, int>> m_listItems;
@@ -206,7 +223,6 @@ private:
     std::wstring            m_resultString;
 
     CDlgResizer             m_resizer;
-    CHyperLink              m_link;
     int                     m_themeCallbackId;
 
     CFileDropTarget *       m_pDropTarget;
@@ -254,4 +270,6 @@ private:
     CRegStdDWORD            m_regDate2Low;
     CRegStdDWORD            m_regDate2High;
     CRegStdDWORD            m_regShowContent;
+    CRegStdDWORD            m_regOpacityNoFocus;
+    CRegStdDWORD            m_regStayOnTop;
 };

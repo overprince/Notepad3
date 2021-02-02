@@ -125,6 +125,8 @@ BEGIN
     IDS_LEX_AHKL            "AutoHotkey_L Skrip"
     IDS_LEX_TEXT_FILES      "Text Files"
     IDS_LEX_TOML_CFG        "TOML"
+    IDS_LEX_DART_SRC        "Dart Source Code"
+    IDS_LEX_KOTLIN_SRC      "Kotlin Source Code"
 END
 
 STRINGTABLE
@@ -447,8 +449,8 @@ BEGIN
     IDS_LEX_STR_63351       "HotStringOption"
     IDS_LEX_STR_63352       "In lyn-IME Kleur"
     IDS_LEX_STR_63353       "2de In lyn-IME Kleur"
-    IDS_LEX_STR_63354       "Multi Edit Indicator"
-    IDS_LEX_STR_63355       "2nd Multi Edit Indicator"
+    IDS_LEX_STR_63354       "Aanwyser vir Meerdere Wysigings"
+    IDS_LEX_STR_63355       "2de Aanwyser vir Meerdere Wysigings"
     IDS_LEX_STR_63356       "Date-Time"
 END
 
@@ -464,8 +466,11 @@ BEGIN
     IDS_LEX_STR_63364       "Property Name"
     IDS_LEX_STR_63365       "LD Keyword"
     IDS_LEX_STR_63366       "ESC Sequence"
-    IDS_LEX_STR_63367       "Unicode-Point Hover"
-    IDS_LEX_STR_63368       "2nd Unicode-Point Hover"
+    IDS_LEX_STR_63367       "Unicode-Punt-Hover"
+    IDS_LEX_STR_63368       "2de Unicode-Punt-Hover"
+    IDS_LEX_STR_63369       "Interface"
+    IDS_LEX_STR_63370       "Annotation"
+    IDS_LEX_STR_63371       "Comment Doc Word"
 END
 
 STRINGTABLE

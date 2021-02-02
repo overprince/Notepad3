@@ -1,7 +1,7 @@
 ;Copyright 2004-2016 John T. Haller of PortableApps.com
 ;encoding: UTF-8
 
-;Website: http://PortableApps.com/Notepad3Portable
+;Website: https://PortableApps.com/Notepad3Portable
 
 ;This software is OSI Certified Open Source Software.
 ;OSI Certified is a certification mark of the Open Source Initiative.
@@ -44,7 +44,7 @@ VIAddVersionKey FileDescription "Based on code from Notepad2, Florian Balmer© 1
 VIAddVersionKey FileVersion "${VER}"
 VIAddVersionKey ProductVersion "${VER}"
 VIAddVersionKey InternalName "${PORTABLEAPPNAME}"
-VIAddVersionKey LegalTrademarks "Rizonesoft© 2008-2020"
+VIAddVersionKey LegalTrademarks "Rizonesoft© 2008-2021"
 VIAddVersionKey OriginalFilename "${DEFAULTEXE}"
 ;VIAddVersionKey PrivateBuild ""
 ;VIAddVersionKey SpecialBuild ""

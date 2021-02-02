@@ -234,8 +234,12 @@
 #endif
 
 #ifdef SI_CONVERT_WIN32
+#ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN 1
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
+#endif
 #include <windows.h>
 #endif
 
@@ -1405,7 +1409,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::LoadFile(
     const char * a_pszFile
     )
 {
-    strcpy_s(m_FilePathA, _countof(m_FilePathA), a_pszFile);
+    //strcpy_s(m_FilePathA, _countof(m_FilePathA), a_pszFile);
     FILE * fp = nullptr;
 #if __STDC_WANT_SECURE_LIB__ && !_WIN32_WCE
     fopen_s(&fp, a_pszFile, "rb");
@@ -1413,7 +1417,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::LoadFile(
     fp = fopen(a_pszFile, "rb");
 #endif // __STDC_WANT_SECURE_LIB__
     if (!fp) {
-        return SI_FILE;
+        return SI_Error::SI_FILE;
     }
     SI_Error rc = LoadFile(fp);
     fclose(fp);
@@ -2617,7 +2621,8 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::SaveFile(
 #else // !__STDC_WANT_SECURE_LIB__
     fp = fopen(a_pszFile, "wb");
 #endif // __STDC_WANT_SECURE_LIB__
-    if (!fp) return SI_FILE;
+    if (!fp)
+        return SI_Error::SI_FILE;
     SI_Error rc = SaveFile(fp, a_bAddSignature);
     fflush(fp);
     fclose(fp);
@@ -2753,7 +2758,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::Save(
         if (iSection->pComment) {
             if (bNeedNewLine) {
                 a_oOutput.Write(SI_NEWLINE_A);
-                //§§§a_oOutput.Write(SI_NEWLINE_A);
+                //???a_oOutput.Write(SI_NEWLINE_A);
                 bNeedNewLine = false;
             }
             if (!OutputMultiLineText(a_oOutput, convert, iSection->pComment)) {
@@ -2763,7 +2768,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::Save(
 
         if (bNeedNewLine) {
             a_oOutput.Write(SI_NEWLINE_A);
-            //§§§a_oOutput.Write(SI_NEWLINE_A);
+            //???a_oOutput.Write(SI_NEWLINE_A);
             bNeedNewLine = false;
         }
 
@@ -2839,7 +2844,7 @@ CSimpleIniTempl<SI_CHAR,SI_STRLESS,SI_CONVERTER>::Save(
                 bNeedNewLine = false;
             }
         }
-        //§§§bNeedNewLine = true;
+        //???bNeedNewLine = true;
     }
 
     return SI_Error::SI_OK;

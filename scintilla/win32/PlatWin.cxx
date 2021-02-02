@@ -255,7 +255,7 @@ static BOOL CALLBACK LoadD2DOnce(PINIT_ONCE initOnce, PVOID parameter, PVOID *lp
 bool LoadD2D() noexcept {
 	static INIT_ONCE once = INIT_ONCE_STATIC_INIT;
 	::InitOnceExecuteOnce(&once, LoadD2DOnce, nullptr, nullptr);
-	return pIDWriteFactory && pD2DFactory;
+	return (pIDWriteFactory && pD2DFactory);
 }
 #endif
 
@@ -405,15 +405,13 @@ bool GetDWriteFontProperties(const LOGFONTW &lf, std::wstring &wsFamily,
 					wsFamily.resize(length + 1);
 					names->GetString(index, wsFamily.data(), length + 1);
 
-					ReleaseUnknown(names);
 					success = wsFamily[0] != L'\0';
 				}
-
-				ReleaseUnknown(family);
+				ReleaseUnknown(names);
 			}
-
-			ReleaseUnknown(font);
+			ReleaseUnknown(family);
 		}
+		ReleaseUnknown(font);
 	}
 	return success;
 }
@@ -540,7 +538,7 @@ public:
 };
 using TextPositions = VarBuffer<XYPOSITION, stackBufferLength>;
 
-class SurfaceGDI : public Surface {
+class SurfaceGDI final : public Surface {
 	bool unicodeMode = false;
 	HDC hdc{};
 	bool hdcOwned = false;
@@ -615,7 +613,7 @@ public:
 	void FlushCachedState() noexcept override;
 
 	void SetUnicodeMode(bool unicodeMode_) noexcept override;
-	//~void SetDBCSMode(int codePage_) noexcept override;
+	void SetDBCSMode(int codePage_) noexcept override;
 	void SetBidiR2L(bool bidiR2L_) noexcept override;
 };
 
@@ -691,7 +689,7 @@ void SurfaceGDI::InitPixMap(int width, int height, Surface *surface_, WindowID w
 	bitmapOld = SelectBitmap(hdc, bitmap);
 	::SetTextAlign(hdc, TA_BASELINE);
 	SetUnicodeMode(psurfOther->unicodeMode);
-	//~SetDBCSMode(psurfOther->codePage);
+	SetDBCSMode(psurfOther->codePage);
 }
 
 void SurfaceGDI::PenColour(ColourDesired fore) noexcept {
@@ -800,7 +798,7 @@ constexpr byte AlphaScaled(unsigned char component, unsigned int alpha) noexcept
 	return static_cast<byte>(component * alpha / 255);
 }
 
-const inline DWORD dwordMultiplied(ColourDesired colour, unsigned int alpha) noexcept {
+constexpr DWORD dwordMultiplied(ColourDesired colour, unsigned int alpha) noexcept {
 	return dwordFromBGRA(
 		AlphaScaled(colour.GetBlue(), alpha),
 		AlphaScaled(colour.GetGreen(), alpha),
@@ -1033,7 +1031,7 @@ void SurfaceGDI::Copy(PRectangle rc, Point from, Surface &surfaceSource) noexcep
 	::BitBlt(hdc,
 		static_cast<int>(rc.left), static_cast<int>(rc.top),
 		static_cast<int>(rc.Width()), static_cast<int>(rc.Height()),
-		static_cast<SurfaceGDI &>(surfaceSource).hdc,
+		dynamic_cast<SurfaceGDI &>(surfaceSource).hdc,
 		static_cast<int>(from.x), static_cast<int>(from.y), SRCCOPY);
 }
 
@@ -1188,12 +1186,10 @@ void SurfaceGDI::SetUnicodeMode(bool unicodeMode_) noexcept {
 	unicodeMode = unicodeMode_;
 }
 
-#if 0
 void SurfaceGDI::SetDBCSMode(int codePage_) noexcept {
 	// No action on window as automatically handled by system.
 	codePage = codePage_;
 }
-#endif
 
 void SurfaceGDI::SetBidiR2L(bool) noexcept {
 }
@@ -1210,7 +1206,7 @@ constexpr D2D1_RECT_F RectangleFromPRectangle(PRectangle rc) noexcept {
 
 class BlobInline;
 
-class SurfaceD2D : public Surface {
+class SurfaceD2D final : public Surface {
 	bool unicodeMode = false;
 	int x = 0;
 	int y = 0;
@@ -1235,6 +1231,7 @@ class SurfaceD2D : public Surface {
 
 	void Clear() noexcept;
 	void SetFont(const Font &font_) noexcept;
+	HRESULT GetBitmap(ID2D1Bitmap **ppBitmap);
 
 public:
 	SurfaceD2D() noexcept = default;
@@ -1290,7 +1287,7 @@ public:
 	void FlushCachedState() noexcept override;
 
 	void SetUnicodeMode(bool unicodeMode_) noexcept override;
-	//~void SetDBCSMode(int codePage_) noexcept override;
+	void SetDBCSMode(int codePage_) noexcept override;
 	void SetBidiR2L(bool bidiR2L_) noexcept override;
 };
 
@@ -1361,7 +1358,12 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID w
 		ownRenderTarget = true;
 	}
 	SetUnicodeMode(psurfOther->unicodeMode);
-	//~SetDBCSMode(psurfOther->codePage);
+	SetDBCSMode(psurfOther->codePage);
+}
+
+HRESULT SurfaceD2D::GetBitmap(ID2D1Bitmap **ppBitmap) {
+	PLATFORM_ASSERT(pBitmapRenderTarget);
+	return pBitmapRenderTarget->GetBitmap(ppBitmap);
 }
 
 void SurfaceD2D::PenColour(ColourDesired fore) {
@@ -1466,11 +1468,8 @@ void SurfaceD2D::LineTo(int x_, int y_) noexcept {
 void SurfaceD2D::Polygon(const Point *pts, size_t npts, ColourDesired fore, ColourDesired back) {
 	PLATFORM_ASSERT(pRenderTarget && (npts > 2));
 	if (pRenderTarget) {
-		ID2D1Factory *pFactory = nullptr;
-		pRenderTarget->GetFactory(&pFactory);
-		PLATFORM_ASSERT(pFactory);
 		ID2D1PathGeometry *geometry = nullptr;
-		HRESULT hr = pFactory->CreatePathGeometry(&geometry);
+		HRESULT hr = pD2DFactory->CreatePathGeometry(&geometry);
 		PLATFORM_ASSERT(geometry);
 		if (SUCCEEDED(hr) && geometry) {
 			ID2D1GeometrySink *sink = nullptr;
@@ -1489,9 +1488,8 @@ void SurfaceD2D::Polygon(const Point *pts, size_t npts, ColourDesired fore, Colo
 				D2DPenColour(fore);
 				pRenderTarget->DrawGeometry(geometry, pBrush);
 			}
-
-			ReleaseUnknown(geometry);
 		}
+		ReleaseUnknown(geometry);
 	}
 }
 
@@ -1515,10 +1513,10 @@ void SurfaceD2D::FillRectangle(PRectangle rc, ColourDesired back) {
 
 void SurfaceD2D::FillRectangle(PRectangle rc, Surface &surfacePattern) {
 	SurfaceD2D *psurfOther = down_cast<SurfaceD2D *>(&surfacePattern);
-	PLATFORM_ASSERT(psurfOther && psurfOther->pBitmapRenderTarget);
+	PLATFORM_ASSERT(psurfOther);
 	psurfOther->FlushDrawing();
 	ID2D1Bitmap *pBitmap = nullptr;
-	HRESULT hr = psurfOther->pBitmapRenderTarget->GetBitmap(&pBitmap);
+	HRESULT hr = psurfOther->GetBitmap(&pBitmap);
 	if (SUCCEEDED(hr) && pBitmap) {
 		ID2D1BitmapBrush *pBitmapBrush = nullptr;
 		const D2D1_BITMAP_BRUSH_PROPERTIES brushProperties =
@@ -1526,14 +1524,14 @@ void SurfaceD2D::FillRectangle(PRectangle rc, Surface &surfacePattern) {
 				D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR);
 		// Create the bitmap brush.
 		hr = pRenderTarget->CreateBitmapBrush(pBitmap, brushProperties, &pBitmapBrush);
-		ReleaseUnknown(pBitmap);
 		if (SUCCEEDED(hr) && pBitmapBrush) {
 			pRenderTarget->FillRectangle(
 				D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom),
 				pBitmapBrush);
-			ReleaseUnknown(pBitmapBrush);
 		}
+		ReleaseUnknown(pBitmapBrush);
 	}
+	ReleaseUnknown(pBitmap);
 }
 
 void SurfaceD2D::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesired back) {
@@ -1555,25 +1553,27 @@ void SurfaceD2D::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesir
 void SurfaceD2D::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fill, int alphaFill,
 	ColourDesired outline, int alphaOutline, int /* flags*/) {
 	if (pRenderTarget) {
+		float const left = std::round(rc.left);
+		float const right = std::round(rc.right);
 		if (cornerSize == 0) {
 			// When corner size is zero, draw square rectangle to prevent blurry pixels at corners
-			const D2D1_RECT_F rectFill = D2D1::RectF(std::round(rc.left) + 1.0f, rc.top + 1.0f, std::round(rc.right) - 1.0f, rc.bottom - 1.0f);
+			const D2D1_RECT_F rectFill = D2D1::RectF(left + 1.0f, rc.top + 1.0f, right - 1.0f, rc.bottom - 1.0f);
 			D2DPenColour(fill, alphaFill);
 			pRenderTarget->FillRectangle(rectFill, pBrush);
 
-			const D2D1_RECT_F rectOutline = D2D1::RectF(std::round(rc.left) + 0.5f, rc.top + 0.5f, std::round(rc.right) - 0.5f, rc.bottom - 0.5f);
+			const D2D1_RECT_F rectOutline = D2D1::RectF(left + 0.5f, rc.top + 0.5f, right - 0.5f, rc.bottom - 0.5f);
 			D2DPenColour(outline, alphaOutline);
 			pRenderTarget->DrawRectangle(rectOutline, pBrush);
 		} else {
 			const float cornerSizeF = static_cast<float>(cornerSize);
 			D2D1_ROUNDED_RECT roundedRectFill = {
-				D2D1::RectF(std::round(rc.left) + 1.0f, rc.top + 1.0f, std::round(rc.right) - 1.0f, rc.bottom - 1.0f),
+				D2D1::RectF(left + 1.0f, rc.top + 1.0f, right - 1.0f, rc.bottom - 1.0f),
 				cornerSizeF - 1.0f, cornerSizeF - 1.0f };
 			D2DPenColour(fill, alphaFill);
 			pRenderTarget->FillRoundedRectangle(roundedRectFill, pBrush);
 
 			D2D1_ROUNDED_RECT roundedRect = {
-				D2D1::RectF(std::round(rc.left) + 0.5f, rc.top + 0.5f, std::round(rc.right) - 0.5f, rc.bottom - 0.5f),
+				D2D1::RectF(left + 0.5f, rc.top + 0.5f, right - 0.5f, rc.bottom - 0.5f),
 				cornerSizeF, cornerSizeF };
 			D2DPenColour(outline, alphaOutline);
 			pRenderTarget->DrawRoundedRectangle(roundedRect, pBrush);
@@ -1583,12 +1583,13 @@ void SurfaceD2D::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fil
 
 namespace {
 
-inline D2D_COLOR_F ColorFromColourAlpha(ColourAlpha colour) noexcept {
-	D2D_COLOR_F col;
-	col.r = colour.GetRedComponent();
-	col.g = colour.GetGreenComponent();
-	col.b = colour.GetBlueComponent();
-	col.a = colour.GetAlphaComponent();
+constexpr D2D_COLOR_F ColorFromColourAlpha(ColourAlpha colour) noexcept {
+	D2D_COLOR_F col = {
+		colour.GetRedComponent(),
+		colour.GetGreenComponent(),
+		colour.GetBlueComponent(),
+		colour.GetAlphaComponent()
+	};
 	return col;
 }
 
@@ -1627,7 +1628,7 @@ void SurfaceD2D::GradientRectangle(PRectangle rc, const std::vector<ColourStop> 
 			pRenderTarget->FillRectangle(&rectangle, pBrushLinear);
 			ReleaseUnknown(pBrushLinear);
 		}
-		ReleaseUnknown(pBrushLinear);
+		ReleaseUnknown(pGradientStops);
 	}
 }
 
@@ -1652,8 +1653,8 @@ void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 		if (SUCCEEDED(hr)) {
 			const D2D1_RECT_F rcDestination = RectangleFromPRectangle(rc);
 			pRenderTarget->DrawBitmap(bitmap, rcDestination);
-			ReleaseUnknown(bitmap);
 		}
+		ReleaseUnknown(bitmap);
 	}
 }
 
@@ -1672,14 +1673,11 @@ void SurfaceD2D::Ellipse(PRectangle rc, ColourDesired fore, ColourDesired back) 
 }
 
 void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
-	SurfaceD2D &surfOther = static_cast<SurfaceD2D &>(surfaceSource);
+	SurfaceD2D &surfOther = dynamic_cast<SurfaceD2D &>(surfaceSource);
 	surfOther.FlushDrawing();
-	ID2D1BitmapRenderTarget *pCompatibleRenderTarget = reinterpret_cast<ID2D1BitmapRenderTarget *>(
-		surfOther.pRenderTarget);
-	PLATFORM_ASSERT(pCompatibleRenderTarget);
 	ID2D1Bitmap *pBitmap = nullptr;
-	HRESULT hr = pCompatibleRenderTarget->GetBitmap(&pBitmap);
-	if (SUCCEEDED(hr)) {
+	HRESULT hr = surfOther.GetBitmap(&pBitmap);
+	if (SUCCEEDED(hr) && pBitmap) {
 		const D2D1_RECT_F rcDestination = RectangleFromPRectangle(rc);
 		D2D1_RECT_F rcSource = { from.x, from.y, from.x + rc.Width(), from.y + rc.Height() };
 		pRenderTarget->DrawBitmap(pBitmap, rcDestination, 1.0f,
@@ -1688,8 +1686,8 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 		if (FAILED(hr)) {
 			//Platform::DebugPrintf("Failed Flush 0x%lx\n", hr);
 		}
-		ReleaseUnknown(pBitmap);
 	}
+	ReleaseUnknown(pBitmap);
 }
 
 class BlobInline : public IDWriteInlineObject {
@@ -2307,12 +2305,10 @@ void SurfaceD2D::SetUnicodeMode(bool unicodeMode_) noexcept {
 	unicodeMode = unicodeMode_;
 }
 
-#if 0
 void SurfaceD2D::SetDBCSMode(int codePage_) noexcept {
 	// No action on window as automatically handled by system.
 	codePage = codePage_;
 }
-#endif
 
 void SurfaceD2D::SetBidiR2L(bool) noexcept {
 }
@@ -2578,7 +2574,7 @@ ListBox::ListBox() noexcept = default;
 
 ListBox::~ListBox() = default;
 
-class ListBoxX : public ListBox {
+class ListBoxX final : public ListBox {
 	int lineHeight;
 	FontID fontCopy;
 	int technology;
@@ -2837,7 +2833,7 @@ int ListBoxX::Find(const char *) const noexcept {
 
 void ListBoxX::GetValue(int n, char *value, int len) const noexcept {
 	const ListItemData item = lti.Get(n);
-	strncpy(value, item.text, len);
+	strncpy_s(value, len, item.text, len);
 	value[len - 1] = '\0';
 }
 
@@ -2926,9 +2922,9 @@ void ListBoxX::Draw(const DRAWITEMSTRUCT *pDrawItem) {
 						surfaceItem->DrawRGBAImage(rcImage,
 							pimage->GetWidth(), pimage->GetHeight(), pimage->Pixels());
 						pDCRT->EndDraw();
-						ReleaseUnknown(pDCRT);
 					}
 				}
+				ReleaseUnknown(pDCRT);
 #endif
 			}
 		}
@@ -3470,13 +3466,7 @@ LRESULT ListBoxX::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		wheelDelta -= GET_WHEEL_DELTA_WPARAM(wParam);
 		if (std::abs(wheelDelta) >= WHEEL_DELTA) {
 			const int nRows = GetVisibleRows();
-			int linesToScroll = 1;
-			if (nRows > 1) {
-				linesToScroll = nRows - 1;
-			}
-			if (linesToScroll > 3) {
-				linesToScroll = 3;
-			}
+			int linesToScroll = std::clamp(nRows - 1, 1, 3);
 			linesToScroll *= (wheelDelta / WHEEL_DELTA);
 			int top = ListBox_GetTopIndex(lb) + linesToScroll;
 			if (top < 0) {

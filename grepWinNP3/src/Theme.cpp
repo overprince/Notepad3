@@ -58,6 +58,8 @@ CTheme::CTheme()
     , m_bDarkModeIsAllowed(false)
     , m_isHighContrastMode(false)
     , m_isHighContrastModeDark(false)
+    , m_DlgFontFace(L"Segoe UI")
+    , m_DlgFontSize(9)
 {
 }
 
@@ -80,7 +82,7 @@ void CTheme::Load()
 {
     IsDarkModeAllowed();
     OnSysColorChanged();
-    auto setDarkMode = bPortable ? _wtoi(g_iniFile.GetValue(L"global", L"darkmode", L"0")) != 0 : !!m_regDarkTheme;
+    auto setDarkMode = bPortable ? g_iniFile.GetBoolValue(L"global", L"darkmode", false) : !!m_regDarkTheme;
     m_dark           = setDarkMode && IsDarkModeAllowed() && !IsHighContrastMode() && DarkModeHelper::Instance().ShouldAppsUseDarkMode();
     m_bLoaded        = true;
 }
@@ -135,6 +137,32 @@ bool CTheme::RemoveRegisteredCallback(int id)
     return false;
 }
 
+
+void CTheme::SetDlgFontFaceName(LPCWSTR FontFaceName, int size)
+{
+    (void)lstrcpyn(m_DlgFontFace, FontFaceName, _countof(m_DlgFontFace));
+    m_DlgFontSize = size;
+}
+
+LPCWSTR CTheme::GetDlgFontFaceName() { return &m_DlgFontFace[0]; }
+int CTheme::GetDlgFontSize() { return m_DlgFontSize; }
+
+void CTheme::SetFontForDialog(HWND hwnd, LPCWSTR FontFaceName, int FontSize)
+{
+    LOGFONT lf = {0};
+    GetObject(GetWindowFont(hwnd), sizeof(lf), &lf);
+    lf.lfWeight = FW_REGULAR;
+    lf.lfHeight = (LONG)FontSize;
+    (void)lstrcpyn(lf.lfFaceName, FontFaceName, _countof(lf.lfFaceName));
+    HFONT const hf = CreateFontIndirect(&lf);
+    HDC const hdc = GetDC(hwnd);
+    SetBkMode(hdc, OPAQUE);
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)hf, TRUE);
+    ReleaseDC(hwnd, hdc);
+}
+
+
+
 bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
 {
     if (IsDarkModeAllowed())
@@ -152,13 +180,14 @@ bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
     EnumThreadWindows(GetCurrentThreadId(), AdjustThemeForChildrenProc, bDark ? TRUE : FALSE);
     ::RedrawWindow(hWnd, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
     }
+    DarkModeHelper::Instance().RefreshTitleBarThemeColor(hWnd, bDark);
     return true;
 }
 
 BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 {
     DarkModeHelper::Instance().AllowDarkModeForWindow(hwnd, (BOOL)lParam);
-    TCHAR szWndClassName[MAX_PATH] = {0};
+    wchar_t szWndClassName[MAX_PATH] = {0};
     GetClassName(hwnd, szWndClassName, _countof(szWndClassName));
     if (lParam)
     {
@@ -218,6 +247,7 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
             SetWindowTheme(hwnd, L"Explorer", nullptr);
         }
         else if ((wcscmp(szWndClassName, WC_COMBOBOXEX) == 0) ||
+                 (wcscmp(szWndClassName, L"ComboLBox") == 0) ||
                  (wcscmp(szWndClassName, WC_COMBOBOX) == 0))
         {
             SetWindowTheme(hwnd, L"Explorer", nullptr);
@@ -240,7 +270,7 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 
                     SetWindowTheme(info.hwndList, L"Explorer", nullptr);
                     SetWindowTheme(info.hwndItem, L"Explorer", nullptr);
-                    SetWindowTheme(info.hwndCombo, L"Explorer", nullptr);
+                    SetWindowTheme(info.hwndCombo, L"CFD", nullptr);
                 }
             }
         }
@@ -905,7 +935,7 @@ void CTheme::OnSysColorChanged()
         RGBtoHSL(::GetSysColor(COLOR_WINDOW), h2, s2, l2);
         m_isHighContrastModeDark = l2 < l1;
     }
-    auto setDarkMode = bPortable ? _wtoi(g_iniFile.GetValue(L"global", L"darkmode", L"0")) != 0 : !!m_regDarkTheme;
+    auto setDarkMode = bPortable ? g_iniFile.GetBoolValue(L"global", L"darkmode", false) : !!m_regDarkTheme;
     m_dark           = setDarkMode && IsDarkModeAllowed() && !IsHighContrastMode() && DarkModeHelper::Instance().ShouldAppsUseDarkMode();
 }
 
@@ -1240,8 +1270,8 @@ void DrawRect(LPRECT prc, HDC hdcPaint, Gdiplus::DashStyle dashStyle, Gdiplus::C
     myPen->SetDashStyle(dashStyle);
     std::unique_ptr<Gdiplus::Graphics> myGraphics(new Gdiplus::Graphics(hdcPaint));
 
-    myGraphics->DrawRectangle(myPen.get(), prc->left, prc->top,
-                              prc->right - 1 - prc->left, prc->bottom - 1 - prc->top);
+    myGraphics->DrawRectangle(myPen.get(), (INT)prc->left, (INT)prc->top,
+                              INT(prc->right - 1 - prc->left), INT(prc->bottom - 1 - prc->top));
 }
 
 void DrawFocusRect(LPRECT prcFocus, HDC hdcPaint)
